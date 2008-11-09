@@ -103,6 +103,9 @@ package com.adobe.wheelerstreet.fig.panzoom.commands
 			_recieverToPoint = new Point (_reciever.topLeft.x + (_toPoint.x - _fromPoint.x),
 										  _reciever.topLeft.y + (_toPoint.y - _fromPoint.y)
 										   );
+										   
+			trace("receiveTL: "+_reciever.topLeft+"\ntoPoint: "+_toPoint+"\nfromPoint: "+_fromPoint);
+			
 			if (_recieverToPoint.x > 0)
 				_recieverToPoint.x = 0;
 			if (_recieverToPoint.x < _client.viewRect.width - _reciever.width)
