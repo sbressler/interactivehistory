@@ -151,7 +151,7 @@ package com.adobe.wheelerstreet.fig.panzoom.commands
 					
 					//
 					// objects	
-					trace(_mouseTracker.isThrow());
+					trace("isThrow:"+_mouseTracker.isThrow());
 
  					if(_reciever.containsRect(ImageViewer(_client).viewRect))
 					{
@@ -236,7 +236,7 @@ package com.adobe.wheelerstreet.fig.panzoom.commands
 		private function handlePanTimer(e:TimerEvent):void
 		{			
 
-			trace(_edgeViolationDirectionX);
+			// trace(_edgeViolationDirectionX);
 
 			// begin tracking stage's mouse (note: this captures mouse
 			// events outside the player and/or browser)
@@ -302,7 +302,7 @@ package com.adobe.wheelerstreet.fig.panzoom.commands
 		private function handleSpringTween(e:TweenEvent):void
 		{
 			_client.invalidateDisplayList();
-			trace(_reciever.x);
+			// trace(_reciever.x);
 		}
 		/**
 	    *  @private

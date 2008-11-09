@@ -1,21 +1,16 @@
 package com.adobe.wheelerstreet.fig.panzoom.modes
 {
 	
+	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	import com.adobe.wheelerstreet.fig.panzoom.commands.PanMouseCommand;
 	import com.adobe.wheelerstreet.fig.panzoom.commands.PanToPointCommand;
-	import com.adobe.wheelerstreet.fig.panzoom.interfaces.ICommandMode;
-	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	import com.adobe.wheelerstreet.fig.panzoom.commands.ZoomCommand;
 	import com.adobe.wheelerstreet.fig.panzoom.events.PanZoomEvent;
+	import com.adobe.wheelerstreet.fig.panzoom.interfaces.ICommandMode;
 	import com.adobe.wheelerstreet.fig.panzoom.utils.ContentRectangle;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import mx.managers.CursorManager;
 
@@ -208,8 +203,11 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 					// only fire center view command if the click comes 
 					// within the CLICK_DEADZONE_RADIUS && if view is smaller than the content.
 					if (__dist < CLICK_DEADZONE_RADIUS && !_client.viewRect.containsRect(_reciever))
-					{
-						_panToPointCommand.fromPoint = new Point(e.localX , e.localY);
+					{	
+						// theoretically we can detect children here
+						// and change coordinate space, if need-be.
+						
+						_panToPointCommand.fromPoint = new Point(e.localX,e.localY);
 						_panToPointCommand.toPoint = new Point(_client.width/2 , _client.height/2);
 						_panToPointCommand.execute();
 					}

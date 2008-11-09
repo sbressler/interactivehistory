@@ -91,6 +91,8 @@ package com.adobe.washuhci.interactivehist
 			
 			testText.text = "Greece";
 			testCity.blendMode = BlendMode.INVERT;
+			testCity.mouseChildren = false; //disable text field interactivity
+			this.addEventListener(MouseEvent.CLICK,selectItem);
 			this.addChild(testCity);
 			
 			addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
@@ -100,18 +102,20 @@ package com.adobe.washuhci.interactivehist
 				//_yOffset = _contentRectangle.y;
 				//_zoom = _contentRectangle.zoom;
 				
-				// center map to greece
+				// center map to greece?
 				var viewLoc:Point = contentCoordstoViewCoords(geoCoordsToPixels(loc));
 				_contentRectangle.centerToPoint(viewLoc);
-				
-				testCity.addEventListener(MouseEvent.CLICK,selectItem);
 			}
 
 		}
 		
-		private function selectItem(me:MouseEvent):Boolean {
-			selected = testText.text;	
-			return false;
+		private function selectItem(me:MouseEvent):void {
+			if(me.target is City) {
+				selected = testText.text;
+				
+				// dont want to pan, just select
+				me.stopImmediatePropagation();
+			}
 		}
 		
 		[Bindable]
@@ -193,9 +197,7 @@ package com.adobe.washuhci.interactivehist
 				}
 			} else if(!showPlacesCities && this.contains(testCity)) {
 				this.removeChild(testCity);
-			}
-			
-			trace(_contentRectangle.x);		
+			}	
 		}
 		
 		/////////////////////////////////////////////////////////
