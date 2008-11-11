@@ -210,7 +210,7 @@
 			</mx:HBox>
 			<mx:HBox width="100%">
 				<mx:Label text="Res:" blendMode="invert"/>
-				<mx:Label text="{imageViewer.time}" id="resMonitorLabel" blendMode="invert"/>
+				<mx:Label text="{imageViewer.timeZoom}" id="resMonitorLabel" blendMode="invert"/>
 			</mx:HBox>
 			<mx:HBox width="100%">
 				<mx:Label text="Showing:" blendMode="invert"/>
