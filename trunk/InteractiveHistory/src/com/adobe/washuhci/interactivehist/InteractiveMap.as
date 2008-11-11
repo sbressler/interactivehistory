@@ -3,10 +3,8 @@ package com.adobe.washuhci.interactivehist
 	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	
 	import flash.display.BlendMode;
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import flash.text.TextField;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Label;
@@ -15,13 +13,7 @@ package com.adobe.washuhci.interactivehist
 	public class InteractiveMap extends ImageViewer
 	{
 		
-		[Embed("assets/placeIcons.swf", symbol="City")]
-		public const City:Class;
-		public var testCity:Sprite = new City() as Sprite;
-		public var testText:TextField = testCity.getChildByName("city_name_txt") as TextField;
-		private var loc:Point = new Point(201.5,51);
-		private var timeStart:Number = -1100;
-		private var timeEnd:Number = 146;
+		public var testCity:City;
 		
 		/** What does this need to hold?
 		 * Arrays (maps?) of these items:
@@ -89,10 +81,14 @@ package com.adobe.washuhci.interactivehist
 		{
 			super();
 			
-			testText.text = "Greece";
+			testCity = new City();
+			testCity.location = new Point(201.5,51);
+			testCity.timeStart = -1100;
+			testCity.timeEnd = 146;
+			testCity.text = "Greece";
 			testCity.blendMode = BlendMode.INVERT;
-			testCity.mouseChildren = false; //disable text field interactivity
-			this.addEventListener(MouseEvent.CLICK,selectItem);
+			testCity.mouseChildren = false;
+			testCity.addEventListener(MouseEvent.CLICK,selectItem);
 			this.addChild(testCity);
 			
 			addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
@@ -103,15 +99,13 @@ package com.adobe.washuhci.interactivehist
 				//_zoom = _contentRectangle.zoom;
 				
 				// center map to greece?
-				var viewLoc:Point = contentCoordstoViewCoords(geoCoordsToPixels(loc));
-				_contentRectangle.centerToPoint(viewLoc);
 			}
 
 		}
 		
 		private function selectItem(me:MouseEvent):void {
 			if(me.target is City) {
-				selected = testText.text;
+				selected = testCity.text
 				
 				// dont want to pan, just select
 				me.stopImmediatePropagation();
@@ -176,19 +170,21 @@ package com.adobe.washuhci.interactivehist
 			if(showPlacesCities) {
 				//testCity.x = _xLoc+(_contentRectangle.x-((_contentRectangle.scaleX/_zoom)*_xOffset));
 				//testCity.y = _yLoc+(_contentRectangle.y-((_contentRectangle.scaleY/_zoom)*_yOffset));
+				testCity.updateDisplay(time,timeZoom);
 				
-				var viewLoc:Point = contentCoordstoViewCoords(geoCoordsToPixels(loc));
+				//trace(testCity.location);
+				
+				var viewLoc:Point = contentCoordstoViewCoords(geoCoordsToPixels(testCity.location));
 				testCity.x = viewLoc.x;
 				testCity.y = viewLoc.y;
 				
-				var alpha:Number = 1.0;
+				var alpha:Number = testCity.alpha;
 				var scale:Number = 1.0;
-				if(time < timeStart) {
-					alpha = Math.max((time-timeStart+timeZoom)/timeZoom,0);
-				} else if(time > timeEnd) {
-					alpha = Math.max((timeEnd-time+timeZoom)/timeZoom,0);
+				if(time < testCity.timeStart) {
+					alpha = Math.max(alpha * ((time-testCity.timeStart+timeZoom)/timeZoom),0);
+				} else if(time > testCity.timeEnd) {
+					alpha = Math.max(alpha * ((testCity.timeEnd-time+timeZoom)/timeZoom),0);
 				} else {
-					// scale?
 				}
 				testCity.alpha = Math.min(alpha,1);
 				
