@@ -12,19 +12,6 @@ package com.adobe.washuhci.interactivehist
 
 	public class InteractiveMap extends ImageViewer
 	{
-		
-		public var testCity:City;
-		
-		/** What does this need to hold?
-		 * Arrays (maps?) of these items:
-		 * nations
-		 * cities
-		 * battles
-		 * events
-		 * borders
-		 * 
-		 * ... photos?
-		 * */
 		 private const DEFAULT_TIME_MIN:Number = -1200;
 		 private const DEFAULT_TIME_MAX:Number = 500;
 		 
@@ -56,7 +43,7 @@ package com.adobe.washuhci.interactivehist
 		 [Bindable]
 		 public var timeZoom:Number = 25.0;
 		 [Bindable]
-		 public var selected:String = "";
+		 public var selected:MapItem = null;
 
 		 private var _showBorderCultural:Boolean = false;
 		 private var _showBorderPolitical:Boolean = false;
@@ -81,15 +68,15 @@ package com.adobe.washuhci.interactivehist
 		{
 			super();
 			
-			testCity = new City();
-			testCity.location = new Point(201.5,51);
-			testCity.timeStart = -1100;
-			testCity.timeEnd = 146;
-			testCity.text = "Greece";
-			testCity.blendMode = BlendMode.INVERT;
-			testCity.mouseChildren = false;
-			testCity.addEventListener(MouseEvent.CLICK,selectItem);
-			this.addChild(testCity);
+			_cities = new Array();
+			
+			injectCityData();
+			
+			for each(var city:City in _cities) {
+				city.blendMode = BlendMode.INVERT;
+				city.mouseChildren = false;
+				city.addEventListener(MouseEvent.CLICK,selectItem);
+			}
 			
 			addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
 			function handleCreationComplete(e:FlexEvent):void
@@ -103,9 +90,33 @@ package com.adobe.washuhci.interactivehist
 
 		}
 		
+		private function injectCityData():void {
+			var athens:City = new City();
+			athens.location = new Point(203.71,52);
+			athens.timeStart = -1400;
+			athens.timeEnd = 2008;
+			athens.text = "Athens";
+			_cities[0] = athens;
+			
+			var rome:City = new City();
+			rome.location = new Point(192.48,48.11);
+			rome.timeStart = -753;
+			rome.timeEnd = 2008;
+			rome.text = "Rome";
+			_cities[1] = rome;
+			
+			var carthage:City = new City();
+			carthage.location = new Point(190.22,53.15);
+			carthage.timeStart = -1215;
+			carthage.timeEnd = 2008;
+			carthage.text = "Carthage";
+			_cities[2] = carthage;
+		}
+		
 		private function selectItem(me:MouseEvent):void {
 			if(me.target is City) {
-				selected = testCity.text
+				var selectedCity:City = me.target as City;
+				selected = selectedCity;
 				
 				// dont want to pan, just select
 				me.stopImmediatePropagation();
@@ -134,8 +145,19 @@ package com.adobe.washuhci.interactivehist
 		public function get showPlacesCities():Boolean {
 			return _showPlacesCities;
 		}
-		public function set showPlacesCities(value:Boolean):void {
-			_showPlacesCities = value;
+		public function set showPlacesCities(doShow:Boolean):void {
+			_showPlacesCities = doShow;
+			
+			var city:City;
+			if(doShow) {
+				for each(city in _cities) {
+					this.addChild(city);
+				}
+			} else {
+				for each(city in _cities) {
+					if(this.contains(city)) this.removeChild(city);
+				}
+			}
 			invalidateDisplayList();
 		}
 		
@@ -168,32 +190,19 @@ package com.adobe.washuhci.interactivehist
 			
 			// now we need to reposition/scale the icons.
 			if(showPlacesCities) {
-				//testCity.x = _xLoc+(_contentRectangle.x-((_contentRectangle.scaleX/_zoom)*_xOffset));
-				//testCity.y = _yLoc+(_contentRectangle.y-((_contentRectangle.scaleY/_zoom)*_yOffset));
-				testCity.updateDisplay(time,timeZoom);
 				
-				//trace(testCity.location);
+				for each(var city:City in _cities) {
+					city.updateDisplay(time,timeZoom);
 				
-				var viewLoc:Point = contentCoordstoViewCoords(geoCoordsToPixels(testCity.location));
-				testCity.x = viewLoc.x;
-				testCity.y = viewLoc.y;
-				
-				var alpha:Number = testCity.alpha;
-				var scale:Number = 1.0;
-				if(time < testCity.timeStart) {
-					alpha = Math.max(alpha * ((time-testCity.timeStart+timeZoom)/timeZoom),0);
-				} else if(time > testCity.timeEnd) {
-					alpha = Math.max(alpha * ((testCity.timeEnd-time+timeZoom)/timeZoom),0);
-				} else {
+					var viewLoc:Point = contentCoordstoViewCoords(geoCoordsToPixels(city.location));
+					city.x = viewLoc.x;
+					city.y = viewLoc.y;
+					
+					if(city.x < 0 || (city.x+city.width) >= viewRect.width || city.y < 0 || (city.y+city.height) >= viewRect.height) {
+						if(this.contains(city)) this.removeChild(city);
+					} else if(!this.contains(city)) this.addChild(city);
 				}
-				testCity.alpha = Math.min(alpha,1);
-				
-				if(!this.contains(testCity)) {
-					this.addChild(testCity);
-				}
-			} else if(!showPlacesCities && this.contains(testCity)) {
-				this.removeChild(testCity);
-			}	
+			}
 		}
 		
 		/////////////////////////////////////////////////////////
