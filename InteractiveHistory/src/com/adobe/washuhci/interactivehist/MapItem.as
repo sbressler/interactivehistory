@@ -19,9 +19,6 @@ package com.adobe.washuhci.interactivehist
 			_checkpoints = new Array();
 			_startProperties = new PropertyList(this);
 			_endProperties = new PropertyList(this);
-			
-			// TESTING:
-			_endProperties.alpha = 0.5;
 		}
 		
 		public function get timeStart():Number {
@@ -65,6 +62,18 @@ package com.adobe.washuhci.interactivehist
 			}
 			
 			applyProperties(interpolateStart.interpolate(interpolateEnd, time));
+			
+			if(Math.abs(time-_timeStart) <= timeResolution) {
+				// alpha goes from 0->1 at time timeStart-timeZoom -> timeStart+timeZoom
+				this.alpha *= ((time-(_timeStart-timeResolution))/(2*timeResolution));
+				
+			} else if(Math.abs(time-_timeEnd)<= timeResolution) {
+				// alpha goes from 1->0 at time (timeEnd-timeZoom) -> timeEnd+timeZoom
+				this.alpha *= (1-(time-(_timeEnd-timeResolution))/(2*timeResolution));
+				
+			} else if(time+timeResolution < _timeStart || time-timeResolution > _timeEnd) {
+				this.alpha = 0;
+			}
 		}
 		
 		private function applyProperties(props:PropertyList):void {

@@ -45,9 +45,9 @@
 	<!--
 		TIMELINE
 	-->
-	<mx:Canvas x="293" y="656" width="552" height="73" id="timelineHighlight" backgroundColor="#B23F3F" backgroundAlpha="0.2" visible="{map.imageViewer.selected != ''}">
+	<mx:Canvas x="293" y="656" width="552" height="73" id="timelineHighlight" backgroundColor="#B23F3F" backgroundAlpha="0.2" visible="{map.imageViewer.selected != null}">
 	</mx:Canvas>
-	<mx:Binding source="map.imageViewer.selected" destination="itemNameLabel.text" />
+	<mx:Binding source="map.imageViewer.selected.name" destination="itemNameLabel.text" />
 	<mx:Binding source="timeline.value" destination="map.imageViewer.time" />
 	<mx:HSlider id="timeline"
 		width="779" height="80"
@@ -111,8 +111,8 @@
 		<mx:Label text="Information" fontStyle="normal" fontWeight="bold"/>
 		<mx:Canvas width="100%" height="100%" backgroundColor="#FFFFFF" backgroundAlpha="0.0" id="infoBox" visible="{itemNameLabel.text != ''}">
 			<mx:VBox x="10" y="10" width="100%" height="100%" verticalGap="0">
-				<mx:Label text="Greece" id="itemNameLabel" fontSize="24" fontWeight="bold"/>
-				<mx:Label text="1100 BC - 146 AD" id="itemTimeframeLabel" fontStyle="italic"/>
+				<mx:Label text="{map.imageViewer.selected.name}" id="itemNameLabel" fontSize="24" fontWeight="bold"/>
+				<mx:Label text="{Math.abs(map.imageViewer.selected.timeStart)+'BC - '+Math.abs(map.imageViewer.selected.timeEnd)+'AD'}" id="itemTimeframeLabel" fontStyle="italic"/>
 				<mx:Spacer height="20" width="100%"/>
 				<mx:HBox width="100%">
 					<mx:Label text="Population:" id="itemDataKey1" fontWeight="bold"/>
