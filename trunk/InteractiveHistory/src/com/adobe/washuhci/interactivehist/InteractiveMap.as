@@ -3,7 +3,7 @@ package com.adobe.washuhci.interactivehist
 	import com.adobe.washuhci.interactivehist.display.*;
 	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	import com.degrafa.geometry.Path;
-	import com.degrafa.paint.SolidFill;
+	import com.degrafa.paint.SolidStroke;
 	
 	import flash.display.BlendMode;
 	import flash.display.Sprite;
@@ -31,7 +31,7 @@ package com.adobe.washuhci.interactivehist
 		 [Bindable]
 		 public var time:Number = timeMin;
 		 [Bindable]
-		 public var timeZoom:Number = 50.0;
+		 public var timeZoom:Number = 20.0;
 		 [Bindable]
 		 public var selected:MapItem = null;
 
@@ -87,7 +87,12 @@ package com.adobe.washuhci.interactivehist
 					_clippingPane.width = width;
 					_clippingPane.height = height;
 				}
-			}		
+			}
+			
+			addEventListener(MouseEvent.CLICK, handleClick);
+			function handleClick(me:MouseEvent):void {
+				selected = null;
+			}
 
 		}
 		
@@ -161,7 +166,7 @@ package com.adobe.washuhci.interactivehist
 
 			
 			var macedonia:Border = new Border("MACEDON");
-			macedonia.location = new Point(200,51);
+			macedonia.location = new Point(200,31);
 			macedonia.timeStart = -300;
 			macedonia.timeEnd = 129;
 			var begin:Path = new Path();
@@ -179,11 +184,12 @@ package com.adobe.washuhci.interactivehist
 					"c-0.15,0.375,0.264,1.637,1.201,3.351c-4.676,2.873-7.021,4.982-10.201,4.982c-4,0-4,15.666,7,14.333s0.666,4.334,6.666,11.334" + 
 					"s57.668,36.333,71.334,15c13.666-21.334,13.333-19.001,11.333-25.334s-3.999-9.666,5.667-10.333s8.999,7.667,12.666,10" + 
 					"S213.31,105.65,210.644,89.983z";
-			macedonia.addCheckpoint(-300,end);
-			var fill:SolidFill = new SolidFill();
-			fill.color = 0xffffff;
-			fill.alpha = 0.5;
-			macedonia.fill = fill;
+			macedonia.addCheckpoint(100,end);
+			var stroke:SolidStroke = new SolidStroke();
+			stroke.color = 0xffffff;
+			stroke.alpha = 0.5;
+			stroke.weight = 3;
+			macedonia.stroke = stroke;
 			_borders[0] = macedonia;
 		}
 		
@@ -208,6 +214,9 @@ package com.adobe.washuhci.interactivehist
 				var selectedBorder:Border = me.target as Border;
 				selected = selectedBorder;
 			}
+			
+			// quick fix, should handle this in the other mouse handler
+			me.stopImmediatePropagation();
 		}
 		
 		[Bindable]
@@ -312,7 +321,7 @@ package com.adobe.washuhci.interactivehist
 					border.x = viewLoc.x;
 					border.y = viewLoc.y;
 					
-					border.scale = _contentRectangle.zoom*1.5;
+					border.scale = _contentRectangle.zoom*2.0;
 					
 					if((border.x+border.width) < 0 || border.x >= viewRect.width || (border.y+border.height) < 0 || border.y >= viewRect.height) {
 						if(this.contains(border)) this.removeChild(border);

@@ -4,6 +4,7 @@ package com.adobe.washuhci.interactivehist.utils
 	import com.degrafa.core.IGraphicsStroke;
 	import com.degrafa.geometry.Path;
 	import com.degrafa.paint.SolidFill;
+	import com.degrafa.paint.SolidStroke;
 	
 	public class BorderProperty
 	{
@@ -34,6 +35,13 @@ package com.adobe.washuhci.interactivehist.utils
 		
 		public function set stroke(stroke:IGraphicsStroke):void {
 			_path.stroke = stroke;
+		}
+		
+		public function set strokeAlpha(alpha:Number):void {
+			if(_path.stroke is SolidStroke) {
+				var stroke:SolidStroke = _path.stroke as SolidStroke;
+				stroke.alpha = alpha;
+			}
 		}
 	}
 }
