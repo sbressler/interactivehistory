@@ -34,14 +34,12 @@ package com.adobe.washuhci.interactivehist.display
 			_borderDisplay = new GeometryGroup();
 			_borderDisplay.target = this;
 			_borderData = new Array();
-					
-			var f:SolidFill = new SolidFill();
-			f.color = 0xffffff;
-			f.alpha = 0.5;
-			this.fill = f;
 			
 			sprite.blendMode = BlendMode.INVERT;
 			this.swapChildren(sprite,_borderDisplay);
+			
+			_borderDisplay.x = -sprite.width/2;
+			_borderDisplay.y = -sprite.height/2;
 		}
 		
 		public function addCheckpoint(time:Number, path:Path):void {
@@ -52,7 +50,7 @@ package com.adobe.washuhci.interactivehist.display
 			if(_startBorder == null) _startBorder = border;
 			_endBorder = border;
 			
-			_borderData[_borderData.length-1] = border;
+			_borderData[_borderData.length] = border;
 			_borderDisplay.geometryCollection.addItem(path);
 		}
 		
@@ -86,28 +84,31 @@ package com.adobe.washuhci.interactivehist.display
 				var t:Number = (time-start.time)/timeRange;
 				start.fillAlpha = (1-t);
 				end.fillAlpha = t;
+				start.strokeAlpha = (1-t);
+				end.strokeAlpha = t;
 			}
 		}
 		
 		public function get fill():IGraphicsFill {
 			return _fill;
 		}
-		public function set fill(fill:IGraphicsFill):void {
-			_fill = fill;
+		public function set fill(value:IGraphicsFill):void {
+			_fill = value;
 			
 			for each(var border:BorderProperty in _borderData) {
-				border.fill = fill;
+				border.fill = value;
 			}
 		}
 		
 		public function get stroke():IGraphicsStroke {
 			return _stroke;
 		}
-		public function set stroke(stroke:IGraphicsStroke):void {
-			_stroke = stroke;
+		public function set stroke(value:IGraphicsStroke):void {
+			_stroke = value;
 			
 			for each(var border:BorderProperty in _borderData) {
-				border.stroke = stroke;
+				border.stroke = value;
+				trace(border.time);
 			}
 		}
 		
