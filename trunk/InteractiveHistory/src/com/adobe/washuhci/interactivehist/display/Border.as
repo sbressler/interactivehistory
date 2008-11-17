@@ -1,8 +1,13 @@
 package com.adobe.washuhci.interactivehist.display
 {
+	import com.adobe.washuhci.interactivehist.utils.BorderProperty;
+	import com.degrafa.GeometryGroup;
+	import com.degrafa.core.IGraphicsFill;
+	import com.degrafa.core.IGraphicsStroke;
 	import com.degrafa.geometry.Path;
-	import com.degrafa.paint.SolidStroke;
+	import com.degrafa.paint.SolidFill;
 	
+	import flash.display.BlendMode;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -13,13 +18,12 @@ package com.adobe.washuhci.interactivehist.display
 		
 		private const TEXTFIELD_NAME:String = "text";
 		
-		private const SVG_DATA:String = "M271.616,493.561c-1.114-0.696-2-2.332-2-3.695c0-1.346-1.146-3.592-2.545-4.992\n" + 
-											"c-2.105-2.104-3.489-2.545-8-2.545c-5.231,0-5.455,0.108-5.455,2.646c5.972,5.035,12.717,9.272,20.012,12.781\n" + 
-											"c-0.003-0.065-0.012-0.129-0.012-0.194C273.616,495.893,272.829,494.317,271.616,493.561z";
-		private var basicStroke:SolidStroke;
-		private var _textFormat:TextFormat;
-		
-		private var _border:Path;
+		private var _borderDisplay:GeometryGroup;
+		private var _borderData:Array;
+		private var _startBorder:BorderProperty = null;
+		private var _endBorder:BorderProperty = null;
+		private var _fill:IGraphicsFill;
+		private var _stroke:IGraphicsStroke;
 		
 		public function Border(name:String = "Border")
 		{
@@ -27,12 +31,29 @@ package com.adobe.washuhci.interactivehist.display
 			super(BorderSprite, name);
 			label = name;
 			
-			basicStroke = new SolidStroke();
-			basicStroke.color = 0x000000;
+			_borderDisplay = new GeometryGroup();
+			_borderDisplay.target = this;
+			_borderData = new Array();
+					
+			var f:SolidFill = new SolidFill();
+			f.color = 0xffffff;
+			f.alpha = 0.5;
+			this.fill = f;
 			
-			_border = new Path(SVG_DATA);
-			_border.stroke = basicStroke;
-			_border.graphicsTarget[0] = this;
+			sprite.blendMode = BlendMode.INVERT;
+			this.swapChildren(sprite,_borderDisplay);
+		}
+		
+		public function addCheckpoint(time:Number, path:Path):void {
+			path.fill = _fill;
+			path.stroke = _stroke;
+			var border:BorderProperty = new BorderProperty(time,path);
+			
+			if(_startBorder == null) _startBorder = border;
+			_endBorder = border;
+			
+			_borderData[_borderData.length-1] = border;
+			_borderDisplay.geometryCollection.addItem(path);
 		}
 		
 		public override function set label(value:String):void {
@@ -40,10 +61,59 @@ package com.adobe.washuhci.interactivehist.display
 			
 			var nameField:TextField = sprite.getChildByName(TEXTFIELD_NAME) as TextField;
 			if(nameField != null) {
-				_textFormat = nameField.getTextFormat();
+				var _textFormat:TextFormat = nameField.getTextFormat();
 				nameField.text = value;
 				nameField.setTextFormat(_textFormat);
 			}
+		}
+		
+		public override function updateDisplay(time:Number, timeResolution:Number):void {
+			super.updateDisplay(time,timeResolution);
+			
+			// find which border we need to render now, and what opacity?
+			var start:BorderProperty = _startBorder;
+			var end:BorderProperty = _endBorder;
+			for each(var border:BorderProperty in _borderData) {
+				if(border.time <= time) start = border;
+				else {
+					end = border;
+					break;
+				}
+			}
+			
+			if(start != null && end != null) {
+				var timeRange:Number = end.time - start.time;
+				var t:Number = (time-start.time)/timeRange;
+				start.fillAlpha = (1-t);
+				end.fillAlpha = t;
+			}
+		}
+		
+		public function get fill():IGraphicsFill {
+			return _fill;
+		}
+		public function set fill(fill:IGraphicsFill):void {
+			_fill = fill;
+			
+			for each(var border:BorderProperty in _borderData) {
+				border.fill = fill;
+			}
+		}
+		
+		public function get stroke():IGraphicsStroke {
+			return _stroke;
+		}
+		public function set stroke(stroke:IGraphicsStroke):void {
+			_stroke = stroke;
+			
+			for each(var border:BorderProperty in _borderData) {
+				border.stroke = stroke;
+			}
+		}
+		
+		public function set scale(scaleUniform:Number):void {
+			_borderDisplay.scaleX = scaleUniform;
+			_borderDisplay.scaleY = scaleUniform;
 		}
 		
 	}

@@ -4,7 +4,30 @@
 	width="1024" height="768"
 	layout="absolute"
 	backgroundGradientColors="[#DCCEAF, #F1E0CC]"
-	borderColor="#DC7B7B" backgroundGradientAlphas="[1.0, 1.0]">
+	borderColor="#DC7B7B" backgroundGradientAlphas="[1.0, 1.0]"
+	resize="{handleResize()}">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ResizeEvent;
+		
+			public function handleResize():void {
+				if(map != null && map.imageViewer != null && map.imageViewer.selected != null) {
+					timelineHighlight.x = timeToSliderPosition(map.imageViewer.selected.timeStart);
+					timelineHighlight.width = timeToSliderPosition(map.imageViewer.selected.timeEnd)-timelineHighlight.x;
+				}
+			}
+		
+			public function timeToSliderPosition(time:Number):Number {
+				var pixelRange:Number = timeline.width - 10;
+				var timeRange:Number = timeline.maximum - timeline.minimum;
+				
+				var timelineLoc:Number = timeline.x + 5 + (Math.abs(time-timeline.minimum)/timeRange)*pixelRange;
+				return Math.min(timeline.x+pixelRange,Math.max(5,timelineLoc));
+			}
+			
+		]]>
+	</mx:Script>
 	
 	<mx:states>
 		<mx:State name="searchResults">
@@ -24,8 +47,8 @@
 	<!-- 
 		MAP
 	-->
-	<comp:FIG_PanZoom id="map" width="779" height="638" 
-		backgroundColor="#8C7B6D" borderStyle="inset" themeColor="#335D77" cornerRadius="0" alpha="1.0" backgroundAlpha="1.0" x="233" y="10">
+	<comp:FIG_PanZoom id="map" 
+		backgroundColor="#8C7B6D" borderStyle="inset" themeColor="#335D77" cornerRadius="0" alpha="1.0" backgroundAlpha="1.0" right="10" top="10" left="233" bottom="118">
 	</comp:FIG_PanZoom>
 	
 	<!--
@@ -45,12 +68,14 @@
 	<!--
 		TIMELINE
 	-->
-	<mx:Canvas x="293" y="656" width="552" height="73" id="timelineHighlight" backgroundColor="#B23F3F" backgroundAlpha="0.2" visible="{map.imageViewer.selected != null}">
+	<mx:Canvas height="73" id="timelineHighlight" backgroundColor="#B23F3F" backgroundAlpha="0.2" visible="{map.imageViewer.selected != null}" bottom="37">
 	</mx:Canvas>
 	<mx:Binding source="map.imageViewer.selected.label" destination="itemNameLabel.text" />
 	<mx:Binding source="timeline.value" destination="map.imageViewer.time" />
+	<mx:Binding source="timeToSliderPosition(map.imageViewer.selected.timeStart)" destination="timelineHighlight.x" />
+	<mx:Binding source="timeToSliderPosition(map.imageViewer.selected.timeEnd)-timeToSliderPosition(map.imageViewer.selected.timeStart)" destination="timelineHighlight.width" />
 	<mx:HSlider id="timeline"
-		width="779" height="80"
+		height="80"
 		allowTrackClick="true" 
 		liveDragging="true"
 		snapInterval="1"
@@ -61,7 +86,7 @@
 		labelOffset="-50"
 		minimum="-1200" maximum="500"
 		value="0"
-		change="{map.imageViewer.invalidateDisplayList()}" y="656" x="233">
+		change="{map.imageViewer.invalidateDisplayList()}" bottom="30" left="233" right="10">
 	</mx:HSlider>
 	
 	<!--
@@ -71,7 +96,7 @@
 	<mx:Binding source="politicalBorderCheckbox.selected" destination="map.imageViewer.showBorderPolitical" />
 	<mx:Binding source="citiesPlacesCheckbox.selected" destination="map.imageViewer.showPlacesCities" />
 	<mx:Binding source="battlePlacesCheckbox.selected" destination="map.imageViewer.showPlacesBattles" />
-	<mx:Accordion x="10" y="458" width="215" height="190" backgroundAlpha="0.5">
+	<mx:Accordion x="10" width="215" height="190" backgroundAlpha="0.5" bottom="118">
 		<mx:Canvas label="Borders" width="100%" height="100%" id="borderPane">
 			<mx:VBox x="10" y="10" width="100%" height="100%" borderStyle="none">
 				<mx:CheckBox label="Political" id="politicalBorderCheckbox" selected="true"/>
