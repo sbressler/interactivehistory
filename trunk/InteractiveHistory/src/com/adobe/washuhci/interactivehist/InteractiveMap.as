@@ -9,6 +9,7 @@ package com.adobe.washuhci.interactivehist
 	import flash.geom.Point;
 	
 	import mx.events.FlexEvent;
+	import mx.events.ResizeEvent;
 
 	public class InteractiveMap extends ImageViewer
 	{
@@ -75,7 +76,16 @@ package com.adobe.washuhci.interactivehist
 			function handleCreationComplete(e:FlexEvent):void
 			{
 				createClippingMask();
-			}			
+				_contentRectangle.centerToPoint(new Point(width/2,height));
+			}
+			
+			addEventListener(ResizeEvent.RESIZE, handleResize);
+			function handleResize(re:ResizeEvent):void {
+				if(_clippingPane != null) {
+					_clippingPane.width = width;
+					_clippingPane.height = height;
+				}
+			}		
 
 		}
 		
@@ -259,7 +269,7 @@ package com.adobe.washuhci.interactivehist
 		 	var geoScaleFactorX:Number = xPixelRange/longitudeRange; // degrees per pixel
 		 	var geoScaleFactorY:Number = yPixelRange/latitudeRange;
 		 	
-		 	return new Point(geoPoint.x*geoScaleFactorX,geoPoint.y*geoScaleFactorY);
+		 	return new Point((geoPoint.x+longitudeMin)*geoScaleFactorX,(geoPoint.y+latitudeMin)*geoScaleFactorY);
 		 }
 		 
 		 private function contentCoordstoViewCoords(contentCoords:Point):Point {
