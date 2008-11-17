@@ -102,23 +102,63 @@ package com.adobe.washuhci.interactivehist
 		}
 		
 		private function injectCityData():void {
-			var athens:City = new City("Athens");
-			athens.location = new Point(203.71,52);
-			athens.timeStart = -1400;
-			athens.timeEnd = 2008;
-			_cities[0] = athens;
-			
-			var rome:City = new City("Rome");
-			rome.location = new Point(192.48,48.11);
-			rome.timeStart = -753;
-			rome.timeEnd = 2008;
-			_cities[1] = rome;
-			
-			var carthage:City = new City("Carthage");
-			carthage.location = new Point(190.22,53.15);
-			carthage.timeStart = -1215;
-			carthage.timeEnd = 2008;
-			_cities[2] = carthage;
+			addCitiesToArrayNoEnd("Athens",23.716647,37.97918,-1400);
+			addCitiesToArrayNoEnd("Corinth",22.930936,37.936326,-1000);
+			addCitiesToArrayNoEnd("Sparta",22.42499,37.074009,-2000);
+			addCitiesToArrayNoEnd("Megara",23.351562,37.996996,-1500);
+			addCitiesToArrayNoEnd("Thebes",23.319409,38.318873,-1100);
+			addCitiesToArrayNoEnd("Eleusis",23.53898,38.040808,-1700);
+			addCitiesToArrayNoEnd("Thessalonica",22.972547,40.625034,-315);
+			addCitiesToArrayNoEnd("Byzantium",28.975926,41.01237900000001,-677);
+			addCitiesToArrayNoEnd("Syracuse",14.985618,37.063022,-734);
+			addCitiesToArrayNoEnd("Rome",12.482324,41.895466,-753);
+			addCitiesToArrayNoEnd("Tyre",35.19480900000001,33.274413,-2750);
+			addCitiesToArrayNoEnd("Carthage",10.227771,36.851776,-1215);
+			addCitiesToArrayNoEnd("Jerusalem",35.20070000000001,31.7857,-3000);
+			addCitiesToArrayNoEnd("Ashkelon",34.559466,31.665944,-1350);
+			addCitiesToArrayNoEnd("Paphos",32.405472,34.768295,-2500);
+			addCitiesToArrayNoEnd("Sidon",35.388969,33.570702,-4000);
+			addCitiesToArrayNoEnd("Gaza",34.308826,31.314394,-3000);
+			addCitiesToArrayNoEnd("Neapolis",14.252871,40.839997,-600);
+			addCitiesToArrayNoEnd("Messana",15.556732,38.192188,-750);
+			addCitiesToArrayNoEnd("Messalia",5.383221,43.298344,-600);
+			addCitiesToArrayNoEnd("Cyrene",21.855004,32.825077,-630);
+			addCitiesToArrayNoEnd("Tarsus",34.90010000000001,36.9201,-1500);
+			addCitiesToArrayNoEnd("Delphi",22.508669,38.480738,-1500);
+			addCitiesToArrayNoEnd("Mycenae",22.756092,37.730907,-1800);
+			addCitiesToArrayNoEnd("Argos",22.679458,37.59789600000001,-1700);
+			addCitiesToArrayNoEnd("Tiryns",22.799892,37.599461,-1400);
+			addCitiesToArrayNoEnd("Knossos",25.178604,35.285424,-2000);
+			addCitiesToArrayNoEnd("Halicarnassus",27.429043,37.037964,-800);
+			addCitiesToArrayNoEnd("Miletus",27.283333,37.516667,-1900);
+			addCitiesToArrayNoEnd("Troy",26.236038,39.976067,-3000);
+			addCitiesToArrayNoEnd("Mytilene",26.599445,39.056667,-800);
+			addCitiesToArrayNoEnd("Naxos",25.38109,37.108501,-1000);
+			addCitiesToArrayNoEnd("Samos",26.980459,37.761539,-1000);
+			addCitiesToArrayNoEnd("Nineveh",43.157265,36.364925,-1800);
+			addCitiesToArrayNoEnd("Babylon",44.420883,32.536504,-3000);
+			addCitiesToArrayNoEnd("Damascus",36.2939,33.5158,-1800);
+			addCitiesToArrayNoEnd("Susa",48.25093,32.19059,-4200);
+			addCitiesToArrayNoEnd("Persepolis",52.9,29.9333,-1250);
+
+//			var athens:City = new City("Athens");
+//			athens.location = new Point(203.71,52);
+//			athens.timeStart = -1400;
+//			athens.timeEnd = 2008;
+//			_cities[0] = athens;
+//			
+//			var rome:City = new City("Rome");
+//			rome.location = new Point(192.48,48.11);
+//			rome.timeStart = -753;
+//			rome.timeEnd = 2008;
+//			_cities[1] = rome;
+//			
+//			var carthage:City = new City("Carthage");
+//			carthage.location = new Point(190.22,53.15);
+//			carthage.timeStart = -1215;
+//			carthage.timeEnd = 2008;
+//			_cities[2] = carthage;
+
 			
 			var macedonia:Border = new Border("MACEDON");
 			macedonia.location = new Point(200,51);
@@ -145,6 +185,18 @@ package com.adobe.washuhci.interactivehist
 			fill.alpha = 0.5;
 			macedonia.fill = fill;
 			_borders[0] = macedonia;
+		}
+		
+		private function addCitiesToArray(name:String, longitude:Number, latitude:Number, start:Number, end:Number):void {
+			var city:City = new City(name);
+			city.location = new Point(180+longitude,90-latitude);
+			city.timeStart = start;
+			city.timeEnd = end;
+			_cities[_cities.length] = city;
+		}
+		
+		private function addCitiesToArrayNoEnd(name:String, longitude:Number, latitude:Number, start:Number):void {
+			addCitiesToArray(name, longitude, latitude, start, 2008);			
 		}
 		
 		private function selectItem(me:MouseEvent):void {
