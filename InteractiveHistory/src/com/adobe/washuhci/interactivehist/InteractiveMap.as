@@ -2,6 +2,8 @@ package com.adobe.washuhci.interactivehist
 {
 	import com.adobe.washuhci.interactivehist.display.*;
 	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
+	import com.degrafa.geometry.Path;
+	import com.degrafa.paint.SolidFill;
 	
 	import flash.display.BlendMode;
 	import flash.display.Sprite;
@@ -67,7 +69,7 @@ package com.adobe.washuhci.interactivehist
 			}
 			
 			for each(var border:Border in _borders) {
-				border.blendMode = BlendMode.INVERT;
+				//border.blendMode = BlendMode.INVERT;
 				border.mouseChildren = false;
 				border.addEventListener(MouseEvent.CLICK,selectItem);
 			}
@@ -118,11 +120,31 @@ package com.adobe.washuhci.interactivehist
 			carthage.timeEnd = 2008;
 			_cities[2] = carthage;
 			
-			var border1:Border = new Border("Italy");
-			border1.location = new Point(192,55);
-			border1.timeStart = -500;
-			border1.timeEnd = 200;
-			_borders[0] = border1;
+			var macedonia:Border = new Border("MACEDON");
+			macedonia.location = new Point(200,51);
+			macedonia.timeStart = -300;
+			macedonia.timeEnd = 129;
+			var begin:Path = new Path();
+			begin.data = "M89.697,3.657c-5-1.333-42.668-6.667-49.334-1.333S9.03,16.657,9.03,16.657s-3.667,4.667-3,5.667s1.334,1.667,0.667,3" + 
+					"s-3,8-2.667,9.333s-3.333,7-4,8.667c-0.667,1.666,9.666,20.666,28.333,20C47.03,62.657,61.364,52.99,76.697,41.657" + 
+					"c15.333-11.333,26-22.667,34.333-23.667s-4-2.667-4-2.667L89.697,3.657z";
+			macedonia.addCheckpoint(-340,begin);
+			var end:Path = new Path();
+			end.data = "M210.644,89.983c-2.666-15.667-44.667-39-49-20.667c-3.812,16.126-6.593,10.591-10.382,8.343" + 
+					"c0.583-0.158,1.155-0.275,1.716-0.343c8.333-1-4-2.667-4-2.667l-17.333-11.667c-0.492-0.131-1.31-0.302-2.373-0.497" + 
+					"c2.628-3.674,8.852-10.833,7.706-12.837c-1.334-2.333-26-31.333-29.667-37.667s-39.666-20-42.333-5.667s-6.667,17-6.667,17" + 
+					"c2.667,1.333,3.334,0.667,8.667,3s6.332,7.333,7.666,7.333s13,4,12.667,7.667s-3.667,9-8,9.333s-17.666-2.667-23.333-3.667" + 
+					"s-14-9-23.667-6.667S12.312,47.983,7.978,47.65S-5.356,62.317,4.311,63.983s7.667,4,13.667,7.667s15.999,7.667,18.666,3.667" + 
+					"s13.334-1.333,14.334,0.667c0,0-3.667,4.667-3,5.667s1.334,1.667,0.667,3c-0.667,1.333-3,8-2.667,9.333s-3.333,7-4,8.667" + 
+					"c-0.15,0.375,0.264,1.637,1.201,3.351c-4.676,2.873-7.021,4.982-10.201,4.982c-4,0-4,15.666,7,14.333s0.666,4.334,6.666,11.334" + 
+					"s57.668,36.333,71.334,15c13.666-21.334,13.333-19.001,11.333-25.334s-3.999-9.666,5.667-10.333s8.999,7.667,12.666,10" + 
+					"S213.31,105.65,210.644,89.983z";
+			macedonia.addCheckpoint(-300,end);
+			var fill:SolidFill = new SolidFill();
+			fill.color = 0xffffff;
+			fill.alpha = 0.5;
+			macedonia.fill = fill;
+			_borders[0] = macedonia;
 		}
 		
 		private function selectItem(me:MouseEvent):void {
@@ -237,6 +259,8 @@ package com.adobe.washuhci.interactivehist
 					viewLoc = contentCoordstoViewCoords(geoCoordsToPixels(border.location));
 					border.x = viewLoc.x;
 					border.y = viewLoc.y;
+					
+					border.scale = _contentRectangle.zoom*1.5;
 					
 					if((border.x+border.width) < 0 || border.x >= viewRect.width || (border.y+border.height) < 0 || border.y >= viewRect.height) {
 						if(this.contains(border)) this.removeChild(border);
