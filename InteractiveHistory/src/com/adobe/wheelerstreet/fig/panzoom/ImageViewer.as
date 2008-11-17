@@ -360,8 +360,9 @@ package com.adobe.wheelerstreet.fig.panzoom
 		{
 			if (_contentRectangle == null)
 				return;
-				
-			_contentRectangle.centerToPoint(new Point(this.width/2, this.height/2));	
+			
+			// DONT'T WANT TO RECENTER
+			//_contentRectangle.centerToPoint(new Point(this.width/2, this.height/2));	
 		}
 		
 		/////////////////////////////////////////////////////////
