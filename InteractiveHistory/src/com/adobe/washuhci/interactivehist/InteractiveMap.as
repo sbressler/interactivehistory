@@ -1,7 +1,7 @@
 package com.adobe.washuhci.interactivehist
 {
-	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	import com.adobe.washuhci.interactivehist.display.*;
+	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	
 	import flash.display.BlendMode;
 	import flash.display.Sprite;
@@ -65,6 +65,12 @@ package com.adobe.washuhci.interactivehist
 				city.addEventListener(MouseEvent.CLICK,selectItem);
 			}
 			
+			for each(var border:Border in _borders) {
+				border.blendMode = BlendMode.INVERT;
+				border.mouseChildren = false;
+				border.addEventListener(MouseEvent.CLICK,selectItem);
+			}
+			
 			addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
 			function handleCreationComplete(e:FlexEvent):void
 			{
@@ -113,9 +119,10 @@ package com.adobe.washuhci.interactivehist
 			if(me.target is City) {
 				var selectedCity:City = me.target as City;
 				selected = selectedCity;
-				
-				// dont want to pan, just select
-				me.stopImmediatePropagation();
+			}
+			else if(me.target is Border) {
+				var selectedBorder:Border = me.target as Border;
+				selected = selectedBorder;
 			}
 		}
 		
