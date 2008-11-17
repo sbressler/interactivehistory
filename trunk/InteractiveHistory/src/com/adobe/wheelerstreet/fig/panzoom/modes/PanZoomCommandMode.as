@@ -196,6 +196,10 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 					// remove listeners
 					_client.removeEventListener(MouseEvent.CLICK, handleMouse);						
 					
+					/**
+					 * REMOVED --- WE DON'T WANT PANNING ON MOUSE CLICK
+					 * 
+					 * 
 					//
 					// commands / actions
 					var __dist:Number = Point.distance(_mouseDownPosition, new Point(e.localX, e.localY));
@@ -204,19 +208,22 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 					// within the CLICK_DEADZONE_RADIUS && if view is smaller than the content.
 					if (__dist < CLICK_DEADZONE_RADIUS && !_client.viewRect.containsRect(_reciever))
 					{	
-						// theoretically we can detect children here
-						// and change coordinate space, if need-be.
+						// change in to parent coordinate space
+						var localizedPoint:Point = new Point(e.localX,e.localY);
+						if(e.target != _client) {
+							var child:DisplayObject = e.target as DisplayObject;
+							localizedPoint = _client.globalToLocal(child.localToGlobal(localizedPoint));	
+						}
 						
-						_panToPointCommand.fromPoint = new Point(e.localX,e.localY);
+						_panToPointCommand.fromPoint = localizedPoint;
 						_panToPointCommand.toPoint = new Point(_client.width/2 , _client.height/2);
 						_panToPointCommand.execute();
 					}
-
+					 * **/
 					break;
 
 				// 4.				
 				case "doubleClick":
-					
 					//
 					// add listeners
 					
@@ -241,8 +248,10 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 					
 					} else 
 					{
+						// need to set zoom origin or something.
+						_zoomCommand.execute();
 						// zoom is triggerd when center-view command is complete
-						_panToPointCommand.addEventListener(PanZoomEvent.COMMAND_COMPLETE, handleCenterView)				
+						//_panToPointCommand.addEventListener(PanZoomEvent.COMMAND_COMPLETE, handleCenterView)				
 					}
 
 					break;
