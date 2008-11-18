@@ -213,7 +213,7 @@
 										
 		</mx:VBox>	
 		
-		<!-- DEBUGGING, comment out to hide -->				
+		<!-- DEBUGGING, comment out to hide 				
 		<mx:VBox verticalGap="0" bottom="10" left="10">
 			<mx:Label text="DEBUG:" blendMode="invert"/>
 			<mx:HBox width="100%">
@@ -234,7 +234,7 @@
 				</mx:VBox>
 			</mx:HBox>
 		</mx:VBox>
-		
+		-->
 	</mx:Canvas>
 	
 
@@ -267,7 +267,7 @@
 	</mx:ControlBar>
 -->
 
-	<mx:ControlBar bottom="0" left="0" right="0">
+	<mx:ControlBar bottom="0" left="0" right="0" visible="false">
 
 		<mx:TextInput
 			id="input"
