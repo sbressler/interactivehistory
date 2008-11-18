@@ -2,14 +2,15 @@ package com.adobe.washuhci.interactivehist.display
 {
 	import com.adobe.washuhci.interactivehist.utils.BorderProperty;
 	import com.degrafa.GeometryGroup;
-	import com.degrafa.core.IGraphicsFill;
-	import com.degrafa.core.IGraphicsStroke;
 	import com.degrafa.geometry.Path;
 	import com.degrafa.paint.SolidFill;
+	import com.degrafa.paint.SolidStroke;
 	
 	import flash.display.BlendMode;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	
+	import mx.utils.ObjectUtil;
 	
 	public class Border extends MapItem
 	{
@@ -22,8 +23,8 @@ package com.adobe.washuhci.interactivehist.display
 		private var _borderData:Array;
 		private var _startBorder:BorderProperty = null;
 		private var _endBorder:BorderProperty = null;
-		private var _fill:IGraphicsFill;
-		private var _stroke:IGraphicsStroke;
+		private var _fill:SolidFill;
+		private var _stroke:SolidStroke;
 		
 		public function Border(name:String = "Border")
 		{
@@ -37,9 +38,6 @@ package com.adobe.washuhci.interactivehist.display
 			
 			sprite.blendMode = BlendMode.INVERT;
 			this.swapChildren(sprite,_borderDisplay);
-			
-			_borderDisplay.x = -sprite.width/2;
-			_borderDisplay.y = -sprite.height/2;
 		}
 		
 		public function addCheckpoint(time:Number, path:Path):void {
@@ -72,14 +70,17 @@ package com.adobe.washuhci.interactivehist.display
 			var start:BorderProperty = _startBorder;
 			var end:BorderProperty = _endBorder;
 			for each(var border:BorderProperty in _borderData) {
-				if(border.time <= time) start = border;
+				if(border.time <= time) {
+					if(start != null) start.strokeAlpha = 0;
+					start = border;
+				}
 				else {
 					end = border;
 					break;
 				}
 			}
-			
-			if(start != null && end != null) {
+						
+			if(start != null && end != null && start != end) {
 				var timeRange:Number = end.time - start.time;
 				var t:Number = (time-start.time)/timeRange;
 				start.fillAlpha = (1-t);
@@ -87,28 +88,35 @@ package com.adobe.washuhci.interactivehist.display
 				start.strokeAlpha = (1-t);
 				end.strokeAlpha = t;
 			}
+			
+			this._borderDisplay.x = -150;
+			this._borderDisplay.y = -100;
 		}
 		
-		public function get fill():IGraphicsFill {
+		public function get fill():SolidFill {
 			return _fill;
 		}
-		public function set fill(value:IGraphicsFill):void {
+		public function set fill(value:SolidFill):void {
 			_fill = value;
 			
+			// still need to fix!
 			for each(var border:BorderProperty in _borderData) {
 				border.fill = value;
 			}
 		}
 		
-		public function get stroke():IGraphicsStroke {
+		public function get stroke():SolidStroke {
 			return _stroke;
 		}
-		public function set stroke(value:IGraphicsStroke):void {
+		public function set stroke(value:SolidStroke):void {
 			_stroke = value;
 			
 			for each(var border:BorderProperty in _borderData) {
-				border.stroke = value;
-				trace(border.time);
+				var strokeCopy:SolidStroke = new SolidStroke();
+				strokeCopy.alpha = value.alpha;
+				strokeCopy.color = value.color;
+				strokeCopy.weight = value.weight;
+				border.stroke = strokeCopy;
 			}
 		}
 		

@@ -84,7 +84,7 @@
 		tickOffset="-10"
 		labels="[1200,,1000,,800,,600,,400,,200,,0,,200,,400,500]"
 		labelOffset="-50"
-		minimum="-1200" maximum="500"
+		minimum="-2000" maximum="500"
 		value="0"
 		change="{map.imageViewer.invalidateDisplayList()}" bottom="30" left="233" right="10">
 	</mx:HSlider>
