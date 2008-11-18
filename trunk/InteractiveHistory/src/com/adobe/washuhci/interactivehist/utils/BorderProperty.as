@@ -18,14 +18,24 @@ package com.adobe.washuhci.interactivehist.utils
 			this.data = data;
 		}
 
+		public function get data():Path {
+			return _path;
+		}
 		public function set data(path:Path):void {
 			_path = path;
 		}
 		
-		public function set fill(fill:IGraphicsFill):void {
+		public function set fill(fill:SolidFill):void {
 			_path.fill = fill;
 		}
 		
+		public function get fillAlpha():Number {
+			if(_path.fill is SolidFill) {
+				var fill:SolidFill = _path.fill as SolidFill;
+				return fill.alpha;
+			}
+			return -1;
+		}
 		public function set fillAlpha(alpha:Number):void {
 			if(_path.fill is SolidFill) {
 				var fill:SolidFill = _path.fill as SolidFill;
@@ -33,10 +43,17 @@ package com.adobe.washuhci.interactivehist.utils
 			}
 		}
 		
-		public function set stroke(stroke:IGraphicsStroke):void {
+		public function set stroke(stroke:SolidStroke):void {
 			_path.stroke = stroke;
 		}
 		
+		public function get strokeAlpha():Number {
+			if(_path.stroke is SolidStroke) {
+				var stroke:SolidStroke = _path.stroke as SolidStroke;
+				return stroke.alpha;
+			}
+			return -1;
+		}
 		public function set strokeAlpha(alpha:Number):void {
 			if(_path.stroke is SolidStroke) {
 				var stroke:SolidStroke = _path.stroke as SolidStroke;
