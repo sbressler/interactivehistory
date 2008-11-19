@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:comp="components.*"
-	width="950" height="700"
+	width="950" height="700" minHeight="500" minWidth="700"
 	layout="absolute"
 	backgroundGradientColors="[#DCCEAF, #F1E0CC]"
 	borderColor="#DC7B7B" backgroundGradientAlphas="[1.0, 1.0]"
@@ -150,7 +150,7 @@
 		<mx:Canvas width="100%" height="100%" backgroundColor="#FFFFFF" backgroundAlpha="0.0" id="infoBox" visible="{itemNameLabel.text != ''}">
 			<mx:VBox x="10" y="10" width="100%" height="100%" verticalGap="0">
 				<mx:Label text="{map.imageViewer.selected.label}" id="itemNameLabel" fontSize="24" fontWeight="bold"/>
-				<mx:Label text="{Math.abs(map.imageViewer.selected.timeStart)+'BC - '+Math.abs(map.imageViewer.selected.timeEnd)+'AD'}" id="itemTimeframeLabel" fontStyle="italic"/>
+				<mx:Label text="{Math.abs(map.imageViewer.selected.timeStart)+((map.imageViewer.selected.timeStart.toString().charAt(0) == '-') ? 'BC' : 'AD') + ' - ' +((map.imageViewer.selected.timeEnd == new Date().getFullYear()) ? 'Present' : Math.abs(map.imageViewer.selected.timeEnd)+((map.imageViewer.selected.timeEnd.toString().charAt(0) == '-') ? 'BC' : 'AD'))}" id="itemTimeframeLabel" fontStyle="italic"/>
 				<mx:Spacer height="20" width="100%"/>
 				<mx:HBox width="100%">
 					<mx:Label text="Population:" id="itemDataKey1" fontWeight="bold"/>
