@@ -63,7 +63,7 @@ package com.adobe.washuhci.interactivehist
 			injectCityData();
 			
 			for each(var city:City in _cities) {
-				city.blendMode = BlendMode.INVERT;
+				city.blendMode = BlendMode.LIGHTEN;
 				city.mouseChildren = false;
 				city.addEventListener(MouseEvent.CLICK,selectItem);
 			}

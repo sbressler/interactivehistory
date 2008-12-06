@@ -22,6 +22,8 @@ package com.adobe.washuhci.interactivehist.display
 		private var _sprite:Sprite;
 		private var _label:String;
 		
+		// add links for article, search terms
+		
 		public function MapItem(SpriteClass:Class, name:String)
 		{
 			_checkpoints = new Array();
