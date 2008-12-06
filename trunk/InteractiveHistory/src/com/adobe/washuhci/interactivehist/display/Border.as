@@ -10,8 +10,6 @@ package com.adobe.washuhci.interactivehist.display
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import mx.utils.ObjectUtil;
-	
 	public class Border extends MapItem
 	{
 		[Embed("/icons/placeIcons.swf", symbol="BorderIcon")]
@@ -21,8 +19,10 @@ package com.adobe.washuhci.interactivehist.display
 		
 		private var _borderDisplay:GeometryGroup;
 		private var _borderData:Array;
+		
 		private var _startBorder:BorderProperty = null;
 		private var _endBorder:BorderProperty = null;
+		
 		private var _fill:SolidFill;
 		private var _stroke:SolidStroke;
 		
@@ -37,7 +37,7 @@ package com.adobe.washuhci.interactivehist.display
 			_borderData = new Array();
 			
 			sprite.blendMode = BlendMode.INVERT;
-			this.swapChildren(sprite,_borderDisplay);
+			this.swapChildren(sprite,_borderDisplay); // push graphics below labels
 		}
 		
 		public function addCheckpoint(time:Number, path:Path):void {
@@ -89,8 +89,7 @@ package com.adobe.washuhci.interactivehist.display
 				end.strokeAlpha = t;
 			}
 			
-			this._borderDisplay.x = -150;
-			this._borderDisplay.y = -100;
+			// center border graphic?
 		}
 		
 		public function get fill():SolidFill {
@@ -99,9 +98,11 @@ package com.adobe.washuhci.interactivehist.display
 		public function set fill(value:SolidFill):void {
 			_fill = value;
 			
-			// still need to fix!
 			for each(var border:BorderProperty in _borderData) {
-				border.fill = value;
+				var fillCopy:SolidFill = new SolidFill();
+				fillCopy.alpha = value.alpha;
+				fillCopy.color = value.color;
+				border.fill = fillCopy;
 			}
 		}
 		
