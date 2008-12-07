@@ -26,6 +26,7 @@ package com.adobe.washuhci.interactivehist.utils
 				rotation = _caller.rotation;
 				transform = _caller.transform;
 				alpha = _caller.alpha;
+				zoomLevelView = _caller.zoomLevelView;
 			} else {
 				location = new Point(0,0);
 				scaleX = 1.0;
@@ -33,9 +34,9 @@ package com.adobe.washuhci.interactivehist.utils
 				rotation = 0;
 				// transform = new Transform(null);
 				alpha = 1.0;
+				zoomLevelView = 5;
 			}
 			
-			zoomLevelView = _zoomLevelView;
 			time = _time;
 		}
 		
@@ -55,12 +56,12 @@ package com.adobe.washuhci.interactivehist.utils
 				interpolated.rotation = ((1-weight)*this.rotation)+(weight*otherProps.rotation);
 				// interpolated.transform = ((1-weight)*this.transform)+(weight*otherProps.transform);
 				interpolated.alpha = ((1-weight)*this.alpha)+(weight*otherProps.alpha);
+				interpolated.zoomLevelView = ((1-weight)*this.zoomLevelView)+(weight*otherProps.zoomLevelView);
 				
 				return interpolated;
 			} else {
 				return this;
 			}	
 		}
-
 	}
 }

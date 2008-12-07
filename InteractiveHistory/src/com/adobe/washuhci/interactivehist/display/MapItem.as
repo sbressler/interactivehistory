@@ -70,7 +70,6 @@ package com.adobe.washuhci.interactivehist.display
 		}
 		public function set zoomLevelView(zLevel:Number):void {
 			_zoomLevelView = zLevel;
-			_startProperties.zoomLevelView = _zoomLevelView;
 		}
 		
 		public function get sprite():Sprite {
@@ -101,18 +100,15 @@ package com.adobe.washuhci.interactivehist.display
 			}
 			
 			applyProperties(interpolateStart.interpolate(interpolateEnd, time));
-			
-			if(Math.abs(time-_timeStart) <= timeResolution) {
+		
+			if(Math.abs(time-_timeStart) <= timeResolution)
 				// alpha goes from 0->1 at time timeStart-timeZoom -> timeStart+timeZoom
 				this.alpha *= ((time-(_timeStart-timeResolution))/(2*timeResolution));
-				
-			} else if(Math.abs(time-_timeEnd)<= timeResolution) {
+			else if(Math.abs(time-_timeEnd)<= timeResolution)
 				// alpha goes from 1->0 at time (timeEnd-timeZoom) -> timeEnd+timeZoom
 				this.alpha *= (1-(time-(_timeEnd-timeResolution))/(2*timeResolution));
-				
-			} else if(time+timeResolution < _timeStart || time-timeResolution > _timeEnd) {
+			else if(time+timeResolution < _timeStart || time-timeResolution > _timeEnd)
 				this.alpha = 0;
-			}
 		}
 		
 		private function applyProperties(props:PropertyList):void {
@@ -122,7 +118,12 @@ package com.adobe.washuhci.interactivehist.display
 			this.rotation = props.rotation;
 			// this.transform = props.transform;
 			this.alpha = props.alpha;
+			//this.zoomLevelView = props.zoomLevelView;
 		}
+		
+//		public function addCheckpoint(propList:PropertyList):void {
+//			_checkpoints[_checkpoints.length] = propList;	
+//		}
 		
 	}
 }
