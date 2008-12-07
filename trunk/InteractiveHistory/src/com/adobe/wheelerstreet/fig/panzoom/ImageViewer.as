@@ -28,9 +28,9 @@ package com.adobe.wheelerstreet.fig.panzoom
 		[Bindable]
 		public var loadingImage:Boolean = false;
 		[Bindable]
-		public var bitmapScaleFactorMin:Number = .125;		
+		public var bitmapScaleFactorMin:Number = .2;		
 		[Bindable]
-		public var bitmapScaleFactorMax:Number = 5;			
+		public var bitmapScaleFactorMax:Number = 1;			
 
 		private var _panZoomCommandMode:PanZoomCommandMode;
 				
@@ -223,25 +223,25 @@ package com.adobe.wheelerstreet.fig.panzoom
 			{
 				case "in":
 					
-					if (_bitmapScaleFactor * 2 > bitmapScaleFactorMax)
+					if (_bitmapScaleFactor + 0.2 > bitmapScaleFactorMax)
 					{
 						_animateProperty.toValue = bitmapScaleFactorMax;
 						
 					} else
 					{
-						_animateProperty.toValue = _bitmapScaleFactor * 2;				
+						_animateProperty.toValue = _bitmapScaleFactor + 0.2;				
 					}				
 					break;
 				
 				case "out":
 					
-					if (_bitmapScaleFactor / 2 > bitmapScaleFactorMax)
+					if (_bitmapScaleFactor - 0.2 > bitmapScaleFactorMax)
 					{
 						_animateProperty.toValue = bitmapScaleFactorMax;
 						
 					} else
 					{
-						_animateProperty.toValue = _bitmapScaleFactor / 2;				
+						_animateProperty.toValue = _bitmapScaleFactor - 0.2;				
 					}				
 					break;					
 			}
@@ -292,25 +292,25 @@ package com.adobe.wheelerstreet.fig.panzoom
 			{
 				case "in":
 					
-					if (_bitmapScaleFactor * 2 > bitmapScaleFactorMax)
+					if (_bitmapScaleFactor + 0.2 > bitmapScaleFactorMax)
 					{
 						_animateProperty.toValue = bitmapScaleFactorMax;
 						
 					} else
 					{
-						_animateProperty.toValue = _bitmapScaleFactor * 2;				
+						_animateProperty.toValue = _bitmapScaleFactor + 0.2;				
 					}				
 					break;
 				
 				case "out":
 					
-					if (_bitmapScaleFactor / 2 > bitmapScaleFactorMax)
+					if (_bitmapScaleFactor - 0.2 > bitmapScaleFactorMax)
 					{
 						_animateProperty.toValue = bitmapScaleFactorMax;
 						
 					} else
 					{
-						_animateProperty.toValue = _bitmapScaleFactor / 2;				
+						_animateProperty.toValue = _bitmapScaleFactor - 0.2;				
 					}				
 					break;					
 			}													     
@@ -344,6 +344,11 @@ package com.adobe.wheelerstreet.fig.panzoom
 			_contentRectangle.zoom = scale;
 			bitmapScaleFactor = scale;
 			
+		}
+		
+		public function getZoom():Number
+		{
+			return bitmapScaleFactor;	
 		}
 		
 		public function centerView():void
