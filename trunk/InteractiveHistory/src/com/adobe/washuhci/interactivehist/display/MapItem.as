@@ -12,6 +12,7 @@ package com.adobe.washuhci.interactivehist.display
 		private var _timeStart:Number;
 		private var _timeEnd:Number;
 		private var _location:Point;
+		private var _zoomLevelView:Number;
 		
 		// any time-dependent property shifts attached to item
 		private var _startProperties:PropertyList;
@@ -61,6 +62,15 @@ package com.adobe.washuhci.interactivehist.display
 			_location = loc;
 			_startProperties.location = _location;
 			_endProperties.location = _location;
+		}
+		
+		[Bindable]
+		public function get zoomLevelView():Number {
+			return _zoomLevelView;
+		}
+		public function set zoomLevelView(zLevel:Number):void {
+			_zoomLevelView = zLevel;
+			_startProperties.zoomLevelView = _zoomLevelView;
 		}
 		
 		public function get sprite():Sprite {

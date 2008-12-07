@@ -158,8 +158,8 @@
 		<ns2:InteractiveMap
 			id="imageViewer"
 			imageURL="{ _imageURL }" 
-			bitmapScaleFactorMax="5"
-			bitmapScaleFactorMin=".05"
+			bitmapScaleFactorMax="1"
+			bitmapScaleFactorMin=".1"
 			width="100%" height="100%"
 			 x="0" y="0"/>
 			 

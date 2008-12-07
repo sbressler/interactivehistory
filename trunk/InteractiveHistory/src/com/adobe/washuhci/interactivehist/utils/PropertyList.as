@@ -15,6 +15,7 @@ package com.adobe.washuhci.interactivehist.utils
 		public var alpha:Number;
 		
 		public var time:Number;
+		public var zoomLevelView:Number;
 		
 		public function PropertyList(_caller:MapItem = null, _time:Number = 0)
 		{
@@ -34,6 +35,7 @@ package com.adobe.washuhci.interactivehist.utils
 				alpha = 1.0;
 			}
 			
+			zoomLevelView = _zoomLevelView;
 			time = _time;
 		}
 		

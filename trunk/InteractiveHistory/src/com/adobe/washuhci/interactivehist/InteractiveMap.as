@@ -107,44 +107,44 @@ package com.adobe.washuhci.interactivehist
 		}
 		
 		private function injectCityData():void {
-			addCitiesToArray("Athens",23.716647,37.97918,-1400);
+			addCitiesToArray("Athens",23.716647,37.97918,-1400, 1);
 //			addCitiesToArray("Corinth",22.930936,37.936326,-1000);
-			addCitiesToArray("Sparta",22.42499,37.074009,-2000,-320);
+			addCitiesToArray("Sparta",22.42499,37.074009,-2000,-320, 1);
 //			addCitiesToArray("Megara",23.351562,37.996996,-1500);
 //			addCitiesToArray("Thebes",23.319409,38.318873,-1100);
 //			addCitiesToArray("Eleusis",23.53898,38.040808,-1700);
-			addCitiesToArray("Thessalonica",22.972547,40.625034,-315);
-			addCitiesToArray("Byzantium",28.975926,41.01237900000001,-677);
-			addCitiesToArray("Syracuse",14.985618,37.063022,-734);
-			addCitiesToArray("Rome",12.482324,41.895466,-753);
-			addCitiesToArray("Tyre",35.19480900000001,33.274413,-2750);
-			addCitiesToArray("Carthage",10.227771,36.851776,-1215,-160);
-			addCitiesToArray("Jerusalem",35.20070000000001,31.7857,-3000);
+			addCitiesToArray("Thessalonica",22.972547,40.625034,-315, 4);
+			addCitiesToArray("Byzantium",28.975926,41.01237900000001,-677, 3);
+			addCitiesToArray("Syracuse",14.985618,37.063022,-734, 3);
+			addCitiesToArray("Rome",12.482324,41.895466,-753, 1);
+			addCitiesToArray("Tyre",35.19480900000001,33.274413,-2750, 4);
+			addCitiesToArray("Carthage",10.227771,36.851776,-1215,-160, 3);
+			addCitiesToArray("Jerusalem",35.20070000000001,31.7857,-3000, 1);
 //			addCitiesToArray("Ashkelon",34.559466,31.665944,-1350);
-			addCitiesToArray("Paphos",32.405472,34.768295,-2500);
+			addCitiesToArray("Paphos",32.405472,34.768295,-2500, 5);
 //			addCitiesToArray("Sidon",35.388969,33.570702,-4000);
-			addCitiesToArray("Gaza",34.308826,31.314394,-3000);
-			addCitiesToArray("Neapolis",14.252871,40.839997,-600);
-			addCitiesToArray("Messana",15.556732,38.192188,-750);
-			addCitiesToArray("Messalia",5.383221,43.298344,-600,300);
-			addCitiesToArray("Cyrene",21.855004,32.825077,-630,250);
-			addCitiesToArray("Tarsus",34.90010000000001,36.9201,-1500);
+			addCitiesToArray("Gaza",34.308826,31.314394,-3000, 2);
+			addCitiesToArray("Neapolis",14.252871,40.839997,-600, 4);
+			addCitiesToArray("Messana",15.556732,38.192188,-750, 5);
+			addCitiesToArray("Messalia",5.383221,43.298344,-600,300, 5);
+			addCitiesToArray("Cyrene",21.855004,32.825077,-630,250, 3);
+			addCitiesToArray("Tarsus",34.90010000000001,36.9201,-1500, 4);
 //			addCitiesToArray("Delphi",22.508669,38.480738,-1500);
 //			addCitiesToArray("Mycenae",22.756092,37.730907,-1800);
 //			addCitiesToArray("Argos",22.679458,37.59789600000001,-1700);
 //			addCitiesToArray("Tiryns",22.799892,37.599461,-1400);
-			addCitiesToArray("Knossos",25.178604,35.285424,-2000);
-			addCitiesToArray("Halicarnassus",27.429043,37.037964,-800,0);
+			addCitiesToArray("Knossos",25.178604,35.285424,-2000, 2);
+			addCitiesToArray("Halicarnassus",27.429043,37.037964,-800,0, 3);
 //			addCitiesToArray("Miletus",27.283333,37.516667,-1900);
-			addCitiesToArray("Troy",26.236038,39.976067,-3000,-800);
-			addCitiesToArray("Mytilene",26.599445,39.056667,-800,-450);
+			addCitiesToArray("Troy",26.236038,39.976067,-3000,-800, 1);
+			addCitiesToArray("Mytilene",26.599445,39.056667,-800,-450, 3);
 //			addCitiesToArray("Naxos",25.38109,37.108501,-1000);
-			addCitiesToArray("Samos",26.980459,37.761539,-1000);
-			addCitiesToArray("Nineveh",43.157265,36.364925,-1800);
-			addCitiesToArray("Babylon",44.420883,32.536504,-3000);
+			addCitiesToArray("Samos",26.980459,37.761539,-1000, 5);
+			addCitiesToArray("Nineveh",43.157265,36.364925,-1800, 4);
+			addCitiesToArray("Babylon",44.420883,32.536504,-3000, 1);
 //			addCitiesToArray("Damascus",36.2939,33.5158,-1800);
-			addCitiesToArray("Susa",48.25093,32.19059,-4200, -330);
-			addCitiesToArray("Persepolis",52.9,29.9333,-1250);
+			addCitiesToArray("Susa",48.25093,32.19059,-4200, -330, 2);
+			addCitiesToArray("Persepolis",52.9,29.9333,-1250, 2);
 
 //			var athens:City = new City("Athens");
 //			athens.location = new Point(203.71,52);
@@ -193,11 +193,12 @@ package com.adobe.washuhci.interactivehist
 			_borders[0] = macedonia;
 		}
 		
-		private function addCitiesToArray(name:String, longitude:Number, latitude:Number, start:Number, end:Number = 2008):void {
+		private function addCitiesToArray(name:String, longitude:Number, latitude:Number, zoomLevelView:Number, start:Number, end:Number = 2008):void {
 			var city:City = new City(name);
 			city.location = new Point(180+longitude,90-latitude);
 			city.timeStart = start;
 			city.timeEnd = end;
+			city.zoomLevelView = zoomLevelView;
 			_cities[_cities.length] = city;
 		}
 		
