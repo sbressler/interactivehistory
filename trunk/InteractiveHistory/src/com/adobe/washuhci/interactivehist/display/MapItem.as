@@ -15,8 +15,6 @@ package com.adobe.washuhci.interactivehist.display
 		private var _zoomLevelView:Number;
 		
 		// any time-dependent property shifts attached to item
-		private var _startProperties:PropertyList;
-		private var _endProperties:PropertyList;
 		private var _checkpoints:Array; // of PropertyList
 		
 		// the display for the item
@@ -28,8 +26,8 @@ package com.adobe.washuhci.interactivehist.display
 		public function MapItem(SpriteClass:Class, name:String)
 		{
 			_checkpoints = new Array();
-			_startProperties = new PropertyList(this);
-			_endProperties = new PropertyList(this);
+			_checkpoints[0] = new PropertyList(this);
+			_checkpoints[length] = new PropertyList(this);
 			
 			_sprite = new SpriteClass() as Sprite;
 			_label = name;
@@ -43,7 +41,7 @@ package com.adobe.washuhci.interactivehist.display
 		}
 		public function set timeStart(tStart:Number):void {
 			_timeStart = tStart;
-			_startProperties.time = _timeStart;
+			_checkpoints[0].time = _timeStart;
 		}
 		
 		[Bindable]
@@ -52,7 +50,7 @@ package com.adobe.washuhci.interactivehist.display
 		}
 		public function set timeEnd(tEnd:Number):void {
 			_timeEnd = tEnd;
-			_endProperties.time = _timeEnd;
+			_checkpoints[length].time = _timeEnd;
 		}
 		
 		public function get location():Point {
@@ -60,8 +58,8 @@ package com.adobe.washuhci.interactivehist.display
 		}
 		public function set location(loc:Point):void {
 			_location = loc;
-			_startProperties.location = _location;
-			_endProperties.location = _location;
+			_checkpoints[0].location = _location;
+			_checkpoints[length].location = _location;
 		}
 		
 		[Bindable]
@@ -86,8 +84,8 @@ package com.adobe.washuhci.interactivehist.display
 		
 		public function updateDisplay(time:Number, timeResolution:Number):void
 		{
-			var interpolateStart:PropertyList = _startProperties;
-			var interpolateEnd:PropertyList = _endProperties;
+			var interpolateStart:PropertyList = _checkpoints[0];
+			var interpolateEnd:PropertyList = _checkpoints[length];
 			
 			for each(var checkpointProps:PropertyList in _checkpoints) {
 				if(checkpointProps.time <= time) {
@@ -122,7 +120,7 @@ package com.adobe.washuhci.interactivehist.display
 		}
 		
 //		public function addCheckpoint(propList:PropertyList):void {
-//			_checkpoints[_checkpoints.length] = propList;	
+//			_checkpoints[_checkpoints.length-1] = propList;	
 //		}
 		
 	}
