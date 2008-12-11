@@ -28,7 +28,7 @@ package com.adobe.washuhci.interactivehist.display
 			_checkpoints = new Array();
 			_checkpoints[0] = new PropertyList(this);
 			_checkpoints[length] = new PropertyList(this);
-			
+
 			_sprite = new SpriteClass() as Sprite;
 			_label = name;
 			

@@ -178,7 +178,7 @@
 		<!--Navigation controlls -->
 		<mx:VBox id="navControls"
 			width="20"
- 			y="10" x="10">
+ 			y="10" right="10">
 			
 			<mx:Spacer/>
 			
