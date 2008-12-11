@@ -5,10 +5,15 @@ package com.adobe.washuhci.interactivehist
 	import com.degrafa.geometry.Path;
 	import com.degrafa.paint.SolidStroke;
 	
+	import flash.display.Bitmap;
 	import flash.display.BlendMode;
+	import flash.display.Loader;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.net.URLRequest;
 	
 	import mx.events.FlexEvent;
 	import mx.events.ResizeEvent;
@@ -42,6 +47,10 @@ package com.adobe.washuhci.interactivehist
 		 
 		 private var _clippingPane:Sprite = null;
 		 
+		 // ELEVATION
+		 private var _elevation:Bitmap = null;
+		 private var _elevationSprite:Sprite = null;
+		 
 		 /**
 		 * We can keep track of the contentRectangle's position,
 		 * and know where to position the icons on the next paint job.
@@ -74,6 +83,16 @@ package com.adobe.washuhci.interactivehist
 				border.addEventListener(MouseEvent.CLICK,selectItem);
 			}
 			
+			// INIT ELEVATION
+			_elevationSprite = new Sprite();
+			var bitmapLoader:Loader = new Loader();
+			bitmapLoader.load(new URLRequest("images/Rainfall.jpg"));
+			bitmapLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleBitmapLoad);
+			function handleBitmapLoad(e:Event):void {
+				_elevation = Bitmap(bitmapLoader.content);
+				trace("load complete!");
+			}
+			
 			addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
 			function handleCreationComplete(e:FlexEvent):void
 			{
@@ -89,10 +108,10 @@ package com.adobe.washuhci.interactivehist
 				}
 			}
 			
-			addEventListener(MouseEvent.CLICK, handleClick);
+			/**addEventListener(MouseEvent.CLICK, handleClick);
 			function handleClick(me:MouseEvent):void {
 				selected = null;
-			}
+			}**/
 
 		}
 		
@@ -327,6 +346,34 @@ package com.adobe.washuhci.interactivehist
 					if((border.x+border.width) < 0 || border.x >= viewRect.width || (border.y+border.height) < 0 || border.y >= viewRect.height) {
 						if(this.contains(border)) this.removeChild(border);
 					} else if(!this.contains(border)) this.addChild(border);
+				}
+			}
+			
+			if(showBorderCultural && _elevation != null) {
+				var __bitmapTransform:Matrix = new Matrix(_contentRectangle.width / _elevation.width,
+											  0,
+											  0,
+											  _contentRectangle.height / _elevation.height,
+											  _contentRectangle.topLeft.x,
+											  _contentRectangle.topLeft.y
+											  );
+
+				// fill the component with the bitmap.
+				_elevationSprite.graphics.clear();
+				_elevationSprite.graphics.beginBitmapFill(_elevation.bitmapData,  // bitmapData
+										 __bitmapTransform,   // matrix
+										 true,                // tile?
+										 false		  // smooth?
+										 );			 
+				
+				_elevationSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
+				
+				if(!this.contains(_elevationSprite)) {
+					this.addChild(_elevationSprite);
+				}
+			} else {
+				if(this.contains(_elevationSprite)) {
+					this.removeChild(_elevationSprite);
 				}
 			}
 		}

@@ -59,24 +59,24 @@ package com.adobe.wheelerstreet.fig.panzoom.commands
 			{
 				case "in":
 				
-					if (_reciever.zoom * 2 > _client.bitmapScaleFactorMax)
+					if (_reciever.zoom + 0.2 > _client.bitmapScaleFactorMax)
 					{
 						_animateProperty.toValue = _client.bitmapScaleFactorMax;
 					} else 
 					{
-						_animateProperty.toValue = _reciever.zoom * 2;						
+						_animateProperty.toValue = _reciever.zoom + 0.2;						
 					}
 
 					break;
 				
 				case "out":
 				
-					if (_reciever.zoom / 2 < _client.bitmapScaleFactorMin)
+					if (_reciever.zoom - 0.2 < _client.bitmapScaleFactorMin)
 					{
 						_animateProperty.toValue = _client.bitmapScaleFactorMin;
 					} else 
 					{
-						_animateProperty.toValue = _reciever.zoom / 2;						
+						_animateProperty.toValue = _reciever.zoom - 0.2;						
 					}					
 					break;
 			}

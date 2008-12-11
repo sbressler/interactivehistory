@@ -306,20 +306,20 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 				case "mouseWheel":
 					
 					
-					var __factor:Number = 1.125;					
+					var __factor:Number = 0.10;					
 					_reciever.zoomOrigin = new Point(
 													 (-_reciever.x + _client.mouseX) *   1/_reciever.scaleX,
 													 (-_reciever.y + _client.mouseY) * 1/_reciever.scaleY
 												    );					
 					if (e.delta > 0)
 					{
-						_reciever.scaleByOrigin(_reciever.scaleX * __factor);										
-						_client.bitmapScaleFactor = _reciever.scaleX * __factor;						
+						_reciever.scaleByOrigin(Math.min(_reciever.scaleX + __factor, _client.bitmapScaleFactorMax));										
+						_client.bitmapScaleFactor = Math.min(_reciever.scaleX + __factor, _client.bitmapScaleFactorMax);
 					
 					} else 
 					{
-						_reciever.scaleByOrigin(_reciever.scaleX / __factor);										
-						_client.bitmapScaleFactor = _reciever.scaleX / __factor;		
+						_reciever.scaleByOrigin(Math.max(_reciever.scaleX - __factor, _client.bitmapScaleFactorMin));										
+						_client.bitmapScaleFactor = Math.max(_reciever.scaleX - __factor, _client.bitmapScaleFactorMin);		
 					}
 
 					_client.invalidateDisplayList();
