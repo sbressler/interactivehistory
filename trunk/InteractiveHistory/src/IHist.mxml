@@ -5,12 +5,12 @@
 	layout="absolute"
 	backgroundGradientColors="[#DCCEAF, #F1E0CC]"
 	borderColor="#DC7B7B" backgroundGradientAlphas="[1.0, 1.0]"
-	resize="{handleResize()}"
-	title="Interactive History">
+	resize="/*{handleResize()}*/"
+	title="Interactive History" xmlns:timeline="com.adobe.washuhci.interactivehist.timeline.*">
 	
 	<mx:Script>
 		<![CDATA[
-			import mx.events.ResizeEvent;
+			/**import mx.events.ResizeEvent;
 		
 			public function handleResize():void {
 				if(map != null && map.imageViewer != null && map.imageViewer.selected != null) {
@@ -25,7 +25,7 @@
 				
 				var timelineLoc:Number = timeline.x + 5 + (Math.abs(time-timeline.minimum)/timeRange)*pixelRange;
 				return Math.min(timeline.x+pixelRange,Math.max(5,timelineLoc));
-			}
+			}**/
 			
 		]]>
 	</mx:Script>
@@ -69,13 +69,22 @@
 	<!--
 		TIMELINE
 	-->
-	<mx:Canvas height="73" id="timelineHighlight" backgroundColor="#B23F3F" backgroundAlpha="0.2" visible="{map.imageViewer.selected != null}" bottom="37">
-	</mx:Canvas>
-	<mx:Binding source="map.imageViewer.selected.label" destination="itemNameLabel.text" />
+	<mx:Binding source="timeline.slider.time" destination="map.imageViewer.time" />
+	<comp:InteractiveTimeline id="timeline"
+		height="120"
+		bottom="0" left="233" right="10"
+		change="{map.imageViewer.invalidateDisplayList()}"
+		backgroundColor="#FFFFFF">
+	</comp:InteractiveTimeline>
+	
+	<!--<mx:Canvas height="73" id="timelineHighlight" backgroundColor="#B23F3F" backgroundAlpha="0.2" visible="{map.imageViewer.selected != null}" bottom="37" >
+	</mx:Canvas>-->
+	<!--
 	<mx:Binding source="timeline.value" destination="map.imageViewer.time" />
 	<mx:Binding source="timeToSliderPosition(map.imageViewer.selected.timeStart)" destination="timelineHighlight.x" />
 	<mx:Binding source="timeToSliderPosition(map.imageViewer.selected.timeEnd)-timeToSliderPosition(map.imageViewer.selected.timeStart)" destination="timelineHighlight.width" />
-	<mx:HSlider id="timeline"
+	-->
+	<!--<mx:HSlider id="timeline"
 		height="80"
 		allowTrackClick="true" 
 		liveDragging="true"
@@ -88,7 +97,7 @@
 		minimum="-3200" maximum="400"
 		value="0"
 		change="{map.imageViewer.invalidateDisplayList()}" bottom="30" left="233" right="10">
-	</mx:HSlider>
+	</mx:HSlider> -->
 	
 	<mx:HBox x="31" width="172" bottom="328" height="2" backgroundColor="#8C7B6D"/>
 	

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:timeline="com.adobe.washuhci.interactivehist.timeline.*"
+	creationComplete="{handleCreationComplete()}"
+	resize="{handleResize()}">
+	
+	<!-- the 'change' event that notifies the map of updates -->
+	<mx:Metadata>
+	[Event(name="change",type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+		
+			// event handlers
+			
+			/**
+			 * Passes the 'change' event on to the main component for processing
+			 * */
+			private function propagateChangeEvent():void {
+				dispatchEvent(new Event("change"));
+			}
+			
+			private function handleResize():void {
+				slider.sliderWidth = this.width;
+			}
+			private function handleCreationComplete():void {
+				slider.sliderWidth = this.width;
+				slider.time = 0;
+			}
+	        
+		]]>
+	</mx:Script>
+	
+	<!--ImageViewer -->
+	<timeline:TimelineSlider
+		id="slider"
+		 x="0" y="0"
+		 width="400" height="110"
+		 change="{propagateChangeEvent()}"/>
+
+</mx:Canvas>
