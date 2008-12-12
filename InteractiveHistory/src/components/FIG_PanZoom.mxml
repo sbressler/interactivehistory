@@ -177,37 +177,20 @@
 		
 		<!--Navigation controlls -->
 		<mx:VBox id="navControls"
-			width="20"
- 			y="10" right="10">
+			width="46"
+ 			y="10" right="10" horizontalAlign="right">
 			
 			<mx:Spacer/>
 			
 			<mx:Button 
-				styleName="ZoomOutButton"
 				toolTip="Zoom In"
 				click="{imageViewer.zoom('in');}"
-				/>
-				
-			<mx:HBox 
-				width="20"
-				>
-				
-				<mx:VSlider
-					minimum="{ imageViewer.bitmapScaleFactorMin }" 
-					maximum="{ imageViewer.bitmapScaleFactorMax }" 
-					value  ="{ imageViewer.bitmapScaleFactor }"	
-					change ="{ imageViewer.setZoom(VSlider(event.currentTarget).value) }" 				
-					snapInterval=".001"
-					liveDragging="true" 
-					/>	
-									
-			</mx:HBox>
+				 label="+" useHandCursor="true" buttonMode="true"/>
 
 			<mx:Button 
-				styleName="ZoomInButton"
 				toolTip="Zoom Out"
 				click="{ imageViewer.zoom('out'); }"			
-				/>	
+				 label="-" buttonMode="true" useHandCursor="true"/>	
 			
 			<mx:Spacer/>
 										

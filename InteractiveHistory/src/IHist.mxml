@@ -48,6 +48,7 @@
 	<!-- 
 		MAP
 	-->
+	<mx:Binding source="map.imageViewer.selected" destination="timeline.selected" />
 	<comp:FIG_PanZoom id="map" 
 		backgroundColor="#8C7B6D" borderStyle="inset" themeColor="#335D77" cornerRadius="0" alpha="1.0" backgroundAlpha="1.0" right="10" top="10" left="233" bottom="118">
 	</comp:FIG_PanZoom>
