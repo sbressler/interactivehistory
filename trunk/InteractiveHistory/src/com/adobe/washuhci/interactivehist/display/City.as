@@ -1,5 +1,6 @@
 package com.adobe.washuhci.interactivehist.display
 {
+	import flash.display.Sprite;
 	import flash.text.TextField;
 	
 	public class City extends MapItem
@@ -14,7 +15,6 @@ package com.adobe.washuhci.interactivehist.display
 			// pass in embedded sprite
 			super(CitySprite, name);
 			label = name;
-			
 		}
 		
 		public override function set label(value:String):void {

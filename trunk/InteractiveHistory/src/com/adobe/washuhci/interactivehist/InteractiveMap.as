@@ -364,9 +364,10 @@ package com.adobe.washuhci.interactivehist
 										 __bitmapTransform,   // matrix
 										 true,                // tile?
 										 false		  // smooth?
-										 );			 
+										 );	 
 				
 				_elevationSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
+				_elevationSprite.alpha = 0.5;
 				
 				if(!this.contains(_elevationSprite)) {
 					this.addChild(_elevationSprite);
