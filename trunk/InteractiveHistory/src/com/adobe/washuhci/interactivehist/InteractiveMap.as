@@ -72,14 +72,13 @@ package com.adobe.washuhci.interactivehist
 			injectCityData();
 			
 			for each(var city:City in _cities) {
-				city.blendMode = BlendMode.LIGHTEN;
-				city.mouseChildren = false;
+				//city.mouseChildren = false;
 				city.addEventListener(MouseEvent.CLICK,selectItem);
 			}
 			
 			for each(var border:Border in _borders) {
 				//border.blendMode = BlendMode.INVERT;
-				border.mouseChildren = false;
+				//border.mouseChildren = false;
 				border.addEventListener(MouseEvent.CLICK,selectItem);
 			}
 			
@@ -233,7 +232,7 @@ package com.adobe.washuhci.interactivehist
 			}
 			
 			// quick fix, should handle this in the other mouse handler
-			me.stopImmediatePropagation();
+			//me.stopImmediatePropagation();
 		}
 		
 		[Bindable]

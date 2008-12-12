@@ -8,14 +8,17 @@ package com.adobe.washuhci.interactivehist.display
 	
 	import flash.display.BlendMode;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
 	public class Border extends MapItem
 	{
-		[Embed("/icons/placeIcons.swf", symbol="BorderIcon")]
+		/*[Embed("/icons/placeIcons.swf", symbol="BorderIcon")]
 		private const BorderSprite:Class;
 		
-		private const TEXTFIELD_NAME:String = "text";
+		private const TEXTFIELD_NAME:String = "text";*/
+		private var _textField:TextField;
+		private var _textFormat:TextFormat;
 		
 		private var _borderDisplay:GeometryGroup;
 		private var _borderData:Array;
@@ -29,15 +32,29 @@ package com.adobe.washuhci.interactivehist.display
 		public function Border(name:String = "Border")
 		{
 			// pass in embedded sprite
-			super(BorderSprite, name);
-			label = name;
+			super(name);
 			
 			_borderDisplay = new GeometryGroup();
 			_borderDisplay.target = this;
+			_borderDisplay.mouseEnabled = false;
 			_borderData = new Array();
 			
-			sprite.blendMode = BlendMode.INVERT;
-			this.swapChildren(sprite,_borderDisplay); // push graphics below labels
+			_textFormat = new TextFormat();
+			_textFormat.color = 0xffffff;
+			_textFormat.size = 14;
+			
+			_textField = new TextField();
+			_textField.autoSize = TextFieldAutoSize.LEFT;
+			_textField.defaultTextFormat = _textFormat;
+			_textField.height = 14+4;
+			
+			this.addChild(_textField);
+			this.blendMode = BlendMode.LAYER;
+			this.mouseChildren = false;
+			//sprite.blendMode = BlendMode.INVERT;
+			//this.swapChildren(sprite,_borderDisplay); // push graphics below labels
+			
+			label = name;
 		}
 		
 		public function addCheckpoint(time:Number, path:Path):void {
@@ -54,17 +71,21 @@ package com.adobe.washuhci.interactivehist.display
 		
 		public override function set label(value:String):void {
 			super.label = value;
+			_textField.text = value;
 			
-			var nameField:TextField = sprite.getChildByName(TEXTFIELD_NAME) as TextField;
-			if(nameField != null) {
+			//var nameField:TextField = sprite.getChildByName(TEXTFIELD_NAME) as TextField;
+			/*if(nameField != null) {
 				var _textFormat:TextFormat = nameField.getTextFormat();
 				nameField.text = value;
 				nameField.setTextFormat(_textFormat);
-			}
+			}*/
 		}
 		
 		public override function updateDisplay(time:Number, timeResolution:Number):void {
 			super.updateDisplay(time,timeResolution);
+			
+			_textField.x = this.width/2;
+			_textField.y = this.height/2;
 			
 			// find which border we need to render now, and what opacity?
 			var start:BorderProperty = _startBorder;
