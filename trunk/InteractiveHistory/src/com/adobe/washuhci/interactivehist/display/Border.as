@@ -90,6 +90,8 @@ package com.adobe.washuhci.interactivehist.display
 			// find which border we need to render now, and what opacity?
 			var start:BorderProperty = _startBorder;
 			var end:BorderProperty = _endBorder;
+			start.strokeAlpha = 0;
+			end.strokeAlpha = 0;
 			for each(var border:BorderProperty in _borderData) {
 				if(border.time <= time) {
 					if(start != null) start.strokeAlpha = 0;
