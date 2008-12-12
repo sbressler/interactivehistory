@@ -12,8 +12,10 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import com.adobe.washuhci.interactivehist.display.MapItem;
 		
 			// event handlers
+			public var _selected:MapItem;
 			
 			/**
 			 * Passes the 'change' event on to the main component for processing
@@ -30,6 +32,11 @@
 				slider.time = 0;
 				
 				insertTestData();
+			}
+			
+			public function set selected(value:MapItem):void {
+				_selected = value;
+				slider.highlightRegion(_selected.timeStart,_selected.timeEnd);
 			}
 			
 			private function insertTestData():void {

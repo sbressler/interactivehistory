@@ -6,7 +6,6 @@ package com.adobe.washuhci.interactivehist
 	import com.degrafa.paint.SolidStroke;
 	
 	import flash.display.Bitmap;
-	import flash.display.BlendMode;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -50,6 +49,13 @@ package com.adobe.washuhci.interactivehist
 		 // ELEVATION
 		 private var _elevation:Bitmap = null;
 		 private var _elevationSprite:Sprite = null;
+		 
+		 // svg background
+		 //[Embed(source="/images/svg_blankmap.svg")]
+		 private var _SVGMap:Class;
+		 private var _svgBg:Sprite;
+		 private var _svgWidth:Number;
+		 private var _svgHeight:Number;
 		 
 		 /**
 		 * We can keep track of the contentRectangle's position,
