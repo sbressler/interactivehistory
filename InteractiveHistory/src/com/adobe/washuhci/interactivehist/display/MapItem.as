@@ -18,7 +18,7 @@ package com.adobe.washuhci.interactivehist.display
 		private var _checkpoints:Array; // of PropertyList
 		
 		// the display for the item
-		private var _sprite:Sprite;
+		protected var _sprite:Sprite;
 		private var _label:String;
 		
 		// add links for article, search terms

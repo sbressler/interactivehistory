@@ -28,16 +28,31 @@
 			private function handleCreationComplete():void {
 				slider.sliderWidth = this.width;
 				slider.time = 0;
+				
+				insertTestData();
+			}
+			
+			private function insertTestData():void {
+				slider.addGenericMarker("The Age of Reason", 340);
+				slider.addGenericMarker("The Age of Foolishness", -500);
+				slider.addSpecificMarker("Range marker 1", -1000, -630);
 			}
 	        
 		]]>
 	</mx:Script>
 	
-	<!--ImageViewer -->
+	<!--Slider -->
 	<timeline:TimelineSlider
 		id="slider"
 		 x="0" y="0"
 		 width="400" height="110"
 		 change="{propagateChangeEvent()}"/>
+		 
+	<mx:Binding source="{slider.canZoomIn}" destination="zoomInBtn.enabled" />
+	<mx:Binding source="{slider.canZoomOut}" destination="zoomOutBtn.enabled" />
+	<mx:VBox height="49" width="44" horizontalAlign="right" verticalGap="2" right="10" top="10">
+		<mx:Button label="+" id="zoomInBtn" click="{slider.zoomIn()}"/>
+		<mx:Button label="-" id="zoomOutBtn" click="{slider.zoomOut()}"/>
+	</mx:VBox>
 
 </mx:Canvas>
