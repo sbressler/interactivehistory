@@ -18,21 +18,17 @@ package com.adobe.washuhci.interactivehist.display
 		private var _checkpoints:Array; // of PropertyList
 		
 		// the display for the item
-		protected var _sprite:Sprite;
 		private var _label:String;
 		
 		// add links for article, search terms
 		
-		public function MapItem(SpriteClass:Class, name:String)
+		public function MapItem(name:String)
 		{
 			_checkpoints = new Array();
 			_checkpoints[0] = new PropertyList(this);
 			_checkpoints[length] = new PropertyList(this);
 
-			_sprite = new SpriteClass() as Sprite;
 			_label = name;
-			
-			this.addChild(_sprite);
 		}
 		
 		[Bindable]
@@ -68,10 +64,6 @@ package com.adobe.washuhci.interactivehist.display
 		}
 		public function set zoomLevelView(zLevel:Number):void {
 			_zoomLevelView = zLevel;
-		}
-		
-		public function get sprite():Sprite {
-			return _sprite;
 		}
 		
 		[Bindable]
