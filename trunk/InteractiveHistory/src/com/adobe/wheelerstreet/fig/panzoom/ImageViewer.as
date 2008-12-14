@@ -412,7 +412,7 @@ package com.adobe.wheelerstreet.fig.panzoom
 				graphics.clear()
 				graphics.beginBitmapFill(_bitmap.bitmapData,  // bitmapData
 										 __bitmapTransform,   // matrix
-										 true,                // tile?
+										 false,                // tile?
 										 _smoothBitmap		  // smooth?
 										 )					 
 				
@@ -422,7 +422,7 @@ package com.adobe.wheelerstreet.fig.panzoom
 				// if the edge of the bitmap transition into view 
 				// we paint in the negative area.
 		
-				/**if (_contentRectangle.left > viewRect.topLeft.x)
+				if (_contentRectangle.left > viewRect.topLeft.x)
 				{
 					graphics.beginFill(0x000000,1)
 					graphics.drawRect(0,0, _contentRectangle.x, unscaledHeight);				
@@ -442,7 +442,7 @@ package com.adobe.wheelerstreet.fig.panzoom
 				{
 					graphics.beginFill(0x000000,1)
 					graphics.drawRect(0,_contentRectangle.bottom, viewRect.width , viewRect.height - _contentRectangle.bottom  );				
-				}**/
+				}
 			
 			}
 		}

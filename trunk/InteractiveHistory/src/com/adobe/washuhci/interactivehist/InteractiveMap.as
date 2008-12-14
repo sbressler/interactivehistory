@@ -42,11 +42,43 @@ package com.adobe.washuhci.interactivehist
 		private var _showOverlaysRainfall:Boolean = false;
 		private var _showOverlaysClimate:Boolean = false;
 		private var _showOverlaysTemperature:Boolean = false;
+		private var _showOverlaysElevation:Boolean = false;
 		private var _showPlacesCities:Boolean = true;
 		private var _showPlacesBattles:Boolean = false;
 		private var _showBorderCultural:Boolean = false;
 		private var _showBorderPolitical:Boolean = false;
+		
+		 private var _clippingPane:Sprite = null;
 		 
+		 // ELEVATION
+		 private var _elevation:Bitmap = null;
+		 private var _elevationSprite:Sprite = null;
+		 private const ELEVATION_URL:URLRequest = new URLRequest("/images/Elevation.jpg");
+		 
+		 // TEMPERATURE
+		 private var _temperature:Bitmap = null;
+		 private var _temperatureSprite:Sprite = null;
+		 private const TEMPERATURE_URL:URLRequest = new URLRequest("/images/Temperature.gif");
+		 
+		 // CLIMATE
+		 private var _climate:Bitmap = null;
+		 private var _climateSprite:Sprite = null;
+		 private const CLIMATE_URL:URLRequest = new URLRequest("/images/Climate.jpg");
+		 
+		 // RAINFALL
+		 private var _rainfall:Bitmap = null;
+		 private var _rainfallSprite:Sprite = null;
+		 private const RAINFALL_URL:URLRequest = new URLRequest("/images/Rainfall.gif");
+		 
+		 // svg background
+		 //[Embed(source="/images/svg_blankmap.svg")]
+		 private var _SVGMap:Class;
+		 private var _svgBg:Sprite;
+		 private var _svgWidth:Number;
+		 private var _svgHeight:Number;
+		 
+		 /**
+=======
 		private var _clippingPane:Sprite = null;
 		
 		// ELEVATION
@@ -61,6 +93,7 @@ package com.adobe.washuhci.interactivehist
 		private var _svgHeight:Number;
 		
 		/**
+>>>>>>> .r37
 		 * We can keep track of the contentRectangle's position,
 		 * and know where to position the icons on the next paint job.
 		 **/
@@ -91,13 +124,35 @@ package com.adobe.washuhci.interactivehist
 				border.addEventListener(MouseEvent.CLICK,selectItem);
 			}
 			
-			// INIT ELEVATION
+			// INIT OVERLAYS
 			_elevationSprite = new Sprite();
+			_temperatureSprite = new Sprite();
+			_rainfallSprite = new Sprite();
+			_climateSprite = new Sprite();
 			var bitmapLoader:Loader = new Loader();
-			bitmapLoader.load(new URLRequest("images/Rainfall.jpg"));
+			trace("temperature loading...");
+			bitmapLoader.load(TEMPERATURE_URL);
 			bitmapLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleBitmapLoad);
 			function handleBitmapLoad(e:Event):void {
-				_elevation = Bitmap(bitmapLoader.content);
+				var loadedURL:String = bitmapLoader.contentLoaderInfo.url;
+				loadedURL = loadedURL.substring(loadedURL.lastIndexOf(":")+1,loadedURL.length);
+				switch(loadedURL) {
+					case TEMPERATURE_URL.url:
+						_temperature = Bitmap(bitmapLoader.content);
+						trace("climate loading...");
+						bitmapLoader.load(CLIMATE_URL); break;
+					case CLIMATE_URL.url:
+						_climate = Bitmap(bitmapLoader.content);
+						trace("rainfall loading...");
+						bitmapLoader.load(RAINFALL_URL); break;	
+					case RAINFALL_URL.url:
+						_rainfall = Bitmap(bitmapLoader.content); 
+						trace("elevation loading...");
+						bitmapLoader.load(ELEVATION_URL); break;
+					case ELEVATION_URL.url:
+						_elevation = Bitmap(bitmapLoader.content); break;
+					default: break;
+				}
 				trace("load complete!");
 			}
 			
@@ -272,22 +327,31 @@ package com.adobe.washuhci.interactivehist
 		}
 		
 		[Bindable]
+		public function get showOverlaysElevation():Boolean {
+			return _showOverlaysElevation;
+		}
+		public function set showOverlaysElevation(value:Boolean):void {
+			_showOverlaysElevation = value;
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
 		public function get showPlacesCities():Boolean {
 			return _showPlacesCities;
 		}
 		public function set showPlacesCities(doShow:Boolean):void {
 			_showPlacesCities = doShow;
 			
-//			var city:City;
-//			if(doShow) {
-//				for each(city in _cities) {
-//					this.addChild(city);
-//				}
-//			} else {
-//				for each(city in _cities) {
-//					if(this.contains(city)) this.removeChild(city);
-//				}
-//			}
+			var city:City;
+			if(doShow) {
+				for each(city in _cities) {
+					this.addChild(city);
+				}
+			} else {
+				for each(city in _cities) {
+					if(this.contains(city)) this.removeChild(city);
+				}
+			}
 			invalidateDisplayList();
 		}
 		
@@ -384,14 +448,17 @@ package com.adobe.washuhci.interactivehist
 				}
 			}
 			
-			if(showBorderCultural && _elevation != null) {
-				var __bitmapTransform:Matrix = new Matrix(_contentRectangle.width / _elevation.width,
-											  0,
-											  0,
-											  _contentRectangle.height / _elevation.height,
-											  _contentRectangle.topLeft.x,
-											  _contentRectangle.topLeft.y
-											  );
+			var __bitmapTransform:Matrix = null;
+			if(showOverlaysElevation && _elevation != null) {
+				if(__bitmapTransform == null) {
+					__bitmapTransform = new Matrix(_contentRectangle.width / _elevation.width,
+												  0,
+												  0,
+												  _contentRectangle.height / _elevation.height,
+												  _contentRectangle.topLeft.x,
+												  _contentRectangle.topLeft.y
+												  );
+				}
 
 				// fill the component with the bitmap.
 				_elevationSprite.graphics.clear();
@@ -410,6 +477,99 @@ package com.adobe.washuhci.interactivehist
 			} else {
 				if(this.contains(_elevationSprite)) {
 					this.removeChild(_elevationSprite);
+				}
+			}
+			
+			if(showOverlaysTemperature && _temperature != null) {
+				if(__bitmapTransform == null) {
+					__bitmapTransform = new Matrix(_contentRectangle.width / _temperature.width,
+												  0,
+												  0,
+												  _contentRectangle.height / _temperature.height,
+												  _contentRectangle.topLeft.x,
+												  _contentRectangle.topLeft.y
+												  );
+				}
+
+				// fill the component with the bitmap.
+				_temperatureSprite.graphics.clear();
+				_temperatureSprite.graphics.beginBitmapFill(_temperature.bitmapData,  // bitmapData
+										 __bitmapTransform,   // matrix
+										 false,                // tile?
+										 false		  // smooth?
+										 );	 
+				
+				_temperatureSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
+				_temperatureSprite.alpha = 0.5;
+				
+				if(!this.contains(_temperatureSprite)) {
+					this.addChild(_temperatureSprite);
+				}
+			} else {
+				if(this.contains(_temperatureSprite)) {
+					this.removeChild(_temperatureSprite);
+				}
+			}
+			
+			if(showOverlaysClimate && _climate != null) {
+				if(__bitmapTransform == null) {
+					__bitmapTransform = new Matrix(_contentRectangle.width / _climate.width,
+												  0,
+												  0,
+												  _contentRectangle.height / _climate.height,
+												  _contentRectangle.topLeft.x,
+												  _contentRectangle.topLeft.y
+												  );
+				}
+
+				// fill the component with the bitmap.
+				_climateSprite.graphics.clear();
+				_climateSprite.graphics.beginBitmapFill(_climate.bitmapData,  // bitmapData
+										 __bitmapTransform,   // matrix
+										 false,                // tile?
+										 false		  // smooth?
+										 );	 
+				
+				_climateSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
+				_climateSprite.alpha = 0.5;
+				
+				if(!this.contains(_climateSprite)) {
+					this.addChild(_climateSprite);
+				}
+			} else {
+				if(this.contains(_climateSprite)) {
+					this.removeChild(_climateSprite);
+				}
+			}
+			
+			if(showOverlaysRainfall && _rainfall != null) {
+				if(__bitmapTransform == null) {
+					__bitmapTransform = new Matrix(_contentRectangle.width / _rainfall.width,
+												  0,
+												  0,
+												  _contentRectangle.height / _rainfall.height,
+												  _contentRectangle.topLeft.x,
+												  _contentRectangle.topLeft.y
+												  );
+				}
+
+				// fill the component with the bitmap.
+				_rainfallSprite.graphics.clear();
+				_rainfallSprite.graphics.beginBitmapFill(_rainfall.bitmapData,  // bitmapData
+										 __bitmapTransform,   // matrix
+										 false,                // tile?
+										 false		  // smooth?
+										 );	 
+				
+				_rainfallSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
+				_rainfallSprite.alpha = 0.5;
+				
+				if(!this.contains(_rainfallSprite)) {
+					this.addChild(_rainfallSprite);
+				}
+			} else {
+				if(this.contains(_rainfallSprite)) {
+					this.removeChild(_rainfallSprite);
 				}
 			}
 		}

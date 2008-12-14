@@ -42,7 +42,7 @@
 			private function insertTestData():void {
 				slider.addGenericMarker("The Age of Reason", 340);
 				slider.addGenericMarker("The Age of Foolishness", -500);
-				slider.addSpecificMarker("Range marker 1", -1000, -630);
+				//slider.addSpecificMarker("Range marker 1", -1000, -630);
 			}
 	        
 		]]>
