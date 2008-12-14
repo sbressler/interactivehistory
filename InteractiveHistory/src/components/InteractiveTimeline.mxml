@@ -57,9 +57,9 @@
 		 
 	<mx:Binding source="{slider.canZoomIn}" destination="zoomInBtn.enabled" />
 	<mx:Binding source="{slider.canZoomOut}" destination="zoomOutBtn.enabled" />
-	<mx:VBox height="49" width="44" horizontalAlign="right" verticalGap="2" right="10" top="10">
-		<mx:Button label="+" id="zoomInBtn" click="{slider.zoomIn()}"/>
-		<mx:Button label="-" id="zoomOutBtn" click="{slider.zoomOut()}"/>
+	<mx:VBox height="53" width="35" horizontalAlign="right" verticalGap="2" right="10" top="10">
+		<mx:Button label="+" id="zoomInBtn" click="{slider.zoomIn()}" fontSize="16" width="35" height="25" fontWeight="bold" fontFamily="Tahoma"/>
+		<mx:Button label="–" id="zoomOutBtn" click="{slider.zoomOut()}" fontSize="16" width="35" height="25" fontWeight="bold" fontFamily="Tahoma"/>
 	</mx:VBox>
 
 </mx:Canvas>
