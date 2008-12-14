@@ -19,48 +19,51 @@ package com.adobe.washuhci.interactivehist
 
 	public class InteractiveMap extends ImageViewer
 	{
-		 public var latitudeMin:Number = 0;
-		 public var latitudeMax:Number = 180;
-		 public var longitudeMin:Number = 0;
-		 public var longitudeMax:Number = 360;
-		 
-		 [Bindable]
-		 public var timeMin:Number = -3200;
-		 [Bindable]
-		 public var timeMax:Number = 400;
-		 
-		 private var _cities:Array;
-		 private var _borders:Array;
-		 
-		 [Bindable]
-		 public var time:Number = timeMin;
-		 [Bindable]
-		 public var timeResolution:Number = 20.0;
-		 [Bindable]
-		 public var selected:MapItem = null;
+		public var latitudeMin:Number = 0;
+		public var latitudeMax:Number = 180;
+		public var longitudeMin:Number = 0;
+		public var longitudeMax:Number = 360;
+		
+		[Bindable]
+		public var timeMin:Number = -3200;
+		[Bindable]
+		public var timeMax:Number = 400;
+		
+		private var _cities:Array;
+		private var _borders:Array;
+		
+		[Bindable]
+		public var time:Number = timeMin;
+		[Bindable]
+		public var timeResolution:Number = 20.0;
+		[Bindable]
+		public var selected:MapItem = null;
 
-		 private var _showBorderCultural:Boolean = false;
-		 private var _showBorderPolitical:Boolean = false;
-		 private var _showPlacesCities:Boolean = false;
-		 private var _showPlacesBattles:Boolean = false;
+		private var _showOverlaysRainfall:Boolean = false;
+		private var _showOverlaysClimate:Boolean = false;
+		private var _showOverlaysTemperature:Boolean = false;
+		private var _showPlacesCities:Boolean = true;
+		private var _showPlacesBattles:Boolean = false;
+		private var _showBorderCultural:Boolean = false;
+		private var _showBorderPolitical:Boolean = false;
 		 
-		 private var _clippingPane:Sprite = null;
-		 
-		 // ELEVATION
-		 private var _elevation:Bitmap = null;
-		 private var _elevationSprite:Sprite = null;
-		 
-		 // svg background
-		 //[Embed(source="/images/svg_blankmap.svg")]
-		 private var _SVGMap:Class;
-		 private var _svgBg:Sprite;
-		 private var _svgWidth:Number;
-		 private var _svgHeight:Number;
-		 
-		 /**
+		private var _clippingPane:Sprite = null;
+		
+		// ELEVATION
+		private var _elevation:Bitmap = null;
+		private var _elevationSprite:Sprite = null;
+		
+		// svg background
+		//[Embed(source="/images/svg_blankmap.svg")]
+		private var _SVGMap:Class;
+		private var _svgBg:Sprite;
+		private var _svgWidth:Number;
+		private var _svgHeight:Number;
+		
+		/**
 		 * We can keep track of the contentRectangle's position,
 		 * and know where to position the icons on the next paint job.
-		 * */
+		 **/
 		
 		/////////////////////////////////////////////////////////
 		//
@@ -242,6 +245,62 @@ package com.adobe.washuhci.interactivehist
 		}
 		
 		[Bindable]
+		public function get showOverlaysRainfall():Boolean {
+			return _showOverlaysRainfall;
+		}
+		public function set showOverlaysRainfall(value:Boolean):void {
+			_showOverlaysRainfall = value;
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
+		public function get showOverlaysClimate():Boolean {
+			return _showOverlaysClimate;
+		}
+		public function set showOverlaysClimate(value:Boolean):void {
+			_showOverlaysClimate = value;
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
+		public function get showOverlaysTemperature():Boolean {
+			return _showOverlaysTemperature;
+		}
+		public function set showOverlaysTemperature(value:Boolean):void {
+			_showOverlaysTemperature = value;
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
+		public function get showPlacesCities():Boolean {
+			return _showPlacesCities;
+		}
+		public function set showPlacesCities(doShow:Boolean):void {
+			_showPlacesCities = doShow;
+			
+//			var city:City;
+//			if(doShow) {
+//				for each(city in _cities) {
+//					this.addChild(city);
+//				}
+//			} else {
+//				for each(city in _cities) {
+//					if(this.contains(city)) this.removeChild(city);
+//				}
+//			}
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
+		public function get showPlacesBattles():Boolean {
+			return _showPlacesBattles;
+		}
+		public function set showPlacesBattles(value:Boolean):void {
+			_showPlacesBattles = value;
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
 		public function get showBorderCultural():Boolean {
 			return _showBorderCultural;
 		}
@@ -257,45 +316,16 @@ package com.adobe.washuhci.interactivehist
 		public function set showBorderPolitical(doShow:Boolean):void {
 			_showBorderPolitical = doShow;
 			
-			var border:Border;
-			if(doShow) {
-				for each(border in _borders) {
-					this.addChild(border);
-				}
-			} else {
-				for each(border in _borders) {
-					if(this.contains(border)) this.removeChild(border);
-				}
-			}
-			invalidateDisplayList();
-		}
-		
-		[Bindable]
-		public function get showPlacesCities():Boolean {
-			return _showPlacesCities;
-		}
-		public function set showPlacesCities(doShow:Boolean):void {
-			_showPlacesCities = doShow;
-			
-			var city:City;
-			if(doShow) {
-				for each(city in _cities) {
-					this.addChild(city);
-				}
-			} else {
-				for each(city in _cities) {
-					if(this.contains(city)) this.removeChild(city);
-				}
-			}
-			invalidateDisplayList();
-		}
-		
-		[Bindable]
-		public function get showPlacesBattles():Boolean {
-			return _showPlacesBattles;
-		}
-		public function set showPlacesBattles(value:Boolean):void {
-			_showPlacesBattles = value;
+//			var border:Border;
+//			if(doShow) {
+//				for each(border in _borders) {
+//					this.addChild(border);
+//				}
+//			} else {
+//				for each(border in _borders) {
+//					if(this.contains(border)) this.removeChild(border);
+//				}
+//			}
 			invalidateDisplayList();
 		}
 		

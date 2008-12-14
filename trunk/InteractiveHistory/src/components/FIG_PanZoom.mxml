@@ -177,20 +177,20 @@
 		
 		<!--Navigation controlls -->
 		<mx:VBox id="navControls"
-			width="46"
- 			y="10" right="10" horizontalAlign="right">
+			width="50"
+ 			y="10" right="10" horizontalAlign="right" height="90">
 			
 			<mx:Spacer/>
 			
 			<mx:Button 
 				toolTip="Zoom In"
 				click="{imageViewer.zoom('in');}"
-				 label="+" useHandCursor="true" buttonMode="true"/>
+				 label="+" useHandCursor="true" buttonMode="true" fontSize="20" fontFamily="Tahoma" width="40" height="30"/>
 
 			<mx:Button 
 				toolTip="Zoom Out"
 				click="{ imageViewer.zoom('out'); }"			
-				 label="-" buttonMode="true" useHandCursor="true"/>	
+				 buttonMode="true" useHandCursor="true" fontFamily="Tahoma" fontSize="20" label="–"/>	
 			
 			<mx:Spacer/>
 										
