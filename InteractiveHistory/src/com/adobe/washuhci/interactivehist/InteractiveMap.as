@@ -47,34 +47,28 @@ package com.adobe.washuhci.interactivehist
 		private var _showPlacesBattles:Boolean = false;
 		private var _showBorderCultural:Boolean = false;
 		private var _showBorderPolitical:Boolean = false;
-		
-		private var _overlayLegendSource:URLRequest;
-		
+				
 		private var _clippingPane:Sprite = null;
 		 
 		// ELEVATION
 		private var _elevation:Bitmap = null;
 		private var _elevationSprite:Sprite = null;
 		private const ELEVATION_URL:URLRequest = new URLRequest("/images/Elevation.jpg");
-		private const ELEVATION_LEGEND_URL:URLRequest = new URLRequest("/images/ElevationLegend.gif");
 		
 		// TEMPERATURE
 		private var _temperature:Bitmap = null;
 		private var _temperatureSprite:Sprite = null;
 		private const TEMPERATURE_URL:URLRequest = new URLRequest("/images/Temperature.gif");
-		private const TEMPERATURE_LEGEND_URL:URLRequest = new URLRequest("/images/TemperatureLegend.gif");
 		
 		// CLIMATE
 		private var _climate:Bitmap = null;
 		private var _climateSprite:Sprite = null;
 		private const CLIMATE_URL:URLRequest = new URLRequest("/images/Climate.jpg");
-		private const CLIMATE_LEGEND_URL:URLRequest = new URLRequest("/images/ClimateLegend.gif");
 		
 		// RAINFALL
 		private var _rainfall:Bitmap = null;
 		private var _rainfallSprite:Sprite = null;
 		private const RAINFALL_URL:URLRequest = new URLRequest("/images/Rainfall.gif");
-		private const RAINFALL_LEGEND_URL:URLRequest = new URLRequest("/images/RainfallLegend.gif");
 		
 		// svg background
 		//[Embed(source="/images/svg_blankmap.svg")]
@@ -303,17 +297,12 @@ package com.adobe.washuhci.interactivehist
 			//me.stopImmediatePropagation();
 		}
 		
-		public function get overlayLegendSource():String {
-			return _overlayLegendSource.url;
-		}
-		
 		[Bindable]
 		public function get showOverlaysRainfall():Boolean {
 			return _showOverlaysRainfall;
 		}
 		public function set showOverlaysRainfall(value:Boolean):void {
 			_showOverlaysRainfall = value;
-			_overlayLegendSource = RAINFALL_LEGEND_URL;
 			invalidateDisplayList();
 		}
 		
@@ -323,7 +312,6 @@ package com.adobe.washuhci.interactivehist
 		}
 		public function set showOverlaysClimate(value:Boolean):void {
 			_showOverlaysClimate = value;
-			_overlayLegendSource = CLIMATE_LEGEND_URL;
 			invalidateDisplayList();
 		}
 		
@@ -333,7 +321,6 @@ package com.adobe.washuhci.interactivehist
 		}
 		public function set showOverlaysTemperature(value:Boolean):void {
 			_showOverlaysTemperature = value;
-			_overlayLegendSource = TEMPERATURE_LEGEND_URL;
 			invalidateDisplayList();
 		}
 		
@@ -343,7 +330,6 @@ package com.adobe.washuhci.interactivehist
 		}
 		public function set showOverlaysElevation(value:Boolean):void {
 			_showOverlaysElevation = value;
-			_overlayLegendSource = ELEVATION_LEGEND_URL;
 			invalidateDisplayList();
 		}
 		
