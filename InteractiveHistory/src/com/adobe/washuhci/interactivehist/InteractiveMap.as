@@ -303,6 +303,10 @@ package com.adobe.washuhci.interactivehist
 			//me.stopImmediatePropagation();
 		}
 		
+		public function get overlayLegendSource():String {
+			return _overlayLegendSource.url;
+		}
+		
 		[Bindable]
 		public function get showOverlaysRainfall():Boolean {
 			return _showOverlaysRainfall;
