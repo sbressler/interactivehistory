@@ -189,4 +189,9 @@
 		</mx:Canvas>
 	</mx:VBox>
 	
+	<!--
+		OVERLAY LEGENDS
+	-->
+	<mx:Image right="10" bottom="118" width="150" height="200" id="overlayLegend"/>
+		
 </mx:WindowedApplication>
