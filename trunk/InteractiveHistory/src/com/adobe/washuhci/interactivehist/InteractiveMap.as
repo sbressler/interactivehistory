@@ -494,7 +494,8 @@ package com.adobe.washuhci.interactivehist
 				
 				if(!this.contains(_elevationSprite)) {
 					this.addChild(_elevationSprite);
-					this.swapChildren(_elevationSprite, _cityLayer); // keep cities on top
+					this.swapChildren(_elevationSprite, _borderLayer);
+					this.swapChildren(_borderLayer, _cityLayer); // keep cities on top
 				}
 			} else {
 				if(this.contains(_elevationSprite)) {
@@ -526,7 +527,8 @@ package com.adobe.washuhci.interactivehist
 				
 				if(!this.contains(_temperatureSprite)) {
 					this.addChild(_temperatureSprite);
-					this.swapChildren(_temperatureSprite, _cityLayer); // keep cities on top
+					this.swapChildren(_temperatureSprite, _borderLayer);
+					this.swapChildren(_borderLayer, _cityLayer); // keep cities on top
 				}
 			} else {
 				if(this.contains(_temperatureSprite)) {
@@ -558,7 +560,8 @@ package com.adobe.washuhci.interactivehist
 				
 				if(!this.contains(_climateSprite)) {
 					this.addChild(_climateSprite);
-					this.swapChildren(_climateSprite, _cityLayer);
+					this.swapChildren(_climateSprite, _borderLayer);
+					this.swapChildren(_borderLayer, _cityLayer);
 				}
 			} else {
 				if(this.contains(_climateSprite)) {
@@ -590,7 +593,8 @@ package com.adobe.washuhci.interactivehist
 				
 				if(!this.contains(_rainfallSprite)) {
 					this.addChild(_rainfallSprite);
-					this.swapChildren(_rainfallSprite, _cityLayer);
+					this.swapChildren(_rainfallSprite, _borderLayer);
+					this.swapChildren(_borderLayer, _cityLayer);
 				}
 			} else {
 				if(this.contains(_rainfallSprite)) {
