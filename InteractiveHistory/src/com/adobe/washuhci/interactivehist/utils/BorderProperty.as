@@ -1,7 +1,5 @@
 package com.adobe.washuhci.interactivehist.utils
 {
-	import com.degrafa.core.IGraphicsFill;
-	import com.degrafa.core.IGraphicsStroke;
 	import com.degrafa.geometry.Path;
 	import com.degrafa.paint.SolidFill;
 	import com.degrafa.paint.SolidStroke;
@@ -27,6 +25,13 @@ package com.adobe.washuhci.interactivehist.utils
 		
 		public function set fill(fill:SolidFill):void {
 			_path.fill = fill;
+		}
+		
+		public function set fillColor(color:uint):void {
+			if(_path.fill is SolidFill) {
+				var fill:SolidFill = _path.fill as SolidFill;
+				fill.color = color;
+			}
 		}
 		
 		public function get fillAlpha():Number {

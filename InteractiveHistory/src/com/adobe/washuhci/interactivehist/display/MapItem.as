@@ -13,6 +13,7 @@ package com.adobe.washuhci.interactivehist.display
 		private var _timeEnd:Number;
 		private var _location:Point;
 		private var _zoomLevelView:Number;
+		private var _selected:Boolean;
 		
 		// any time-dependent property shifts attached to item
 		private var _checkpoints:Array; // of PropertyList
@@ -29,6 +30,15 @@ package com.adobe.washuhci.interactivehist.display
 			_checkpoints[length] = new PropertyList(this);
 
 			_label = name;
+			_zoomLevelView = 0;
+			_selected = false;
+		}
+		
+		public function get selected():Boolean {
+			return _selected;
+		}
+		public function set selected(value:Boolean):void {
+			_selected = value;
 		}
 		
 		[Bindable]

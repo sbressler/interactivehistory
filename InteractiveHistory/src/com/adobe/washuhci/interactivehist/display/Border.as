@@ -7,6 +7,7 @@ package com.adobe.washuhci.interactivehist.display
 	import com.degrafa.paint.SolidStroke;
 	
 	import flash.display.BlendMode;
+	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -20,6 +21,7 @@ package com.adobe.washuhci.interactivehist.display
 		private var _textField:TextField;
 		private var _textFormat:TextFormat;
 		
+		private var _borderLayer:Sprite;
 		private var _borderDisplay:GeometryGroup;
 		private var _borderData:Array;
 		
@@ -34,23 +36,27 @@ package com.adobe.washuhci.interactivehist.display
 			// pass in embedded sprite
 			super(name);
 			
+			_borderLayer = new Sprite();
 			_borderDisplay = new GeometryGroup();
-			_borderDisplay.target = this;
-			_borderDisplay.mouseEnabled = false;
+			_borderDisplay.target = _borderLayer;
 			_borderData = new Array();
 			
 			_textFormat = new TextFormat();
 			_textFormat.color = 0xffffff;
 			_textFormat.size = 14;
+			_textFormat.letterSpacing = 4;
 			
 			_textField = new TextField();
 			_textField.autoSize = TextFieldAutoSize.LEFT;
 			_textField.defaultTextFormat = _textFormat;
 			_textField.height = 14+4;
 			
+			this.addChild(_borderLayer);
 			this.addChild(_textField);
 			this.blendMode = BlendMode.LAYER;
 			this.mouseChildren = false;
+			_borderLayer.mouseEnabled = false;
+			//_textField.mouseEnabled = false;
 			//sprite.blendMode = BlendMode.INVERT;
 			//this.swapChildren(sprite,_borderDisplay); // push graphics below labels
 			
@@ -106,13 +112,27 @@ package com.adobe.washuhci.interactivehist.display
 			if(start != null && end != null && start != end) {
 				var timeRange:Number = end.time - start.time;
 				var t:Number = (time-start.time)/timeRange;
-				start.fillAlpha = (1-t);
-				end.fillAlpha = t;
+				if(selected) {
+					start.fillAlpha = 0.5 * (1-t);
+					end.fillAlpha = 0.5 * t;
+				} else {
+					start.fillAlpha = fill.alpha * (1-t);
+					end.fillAlpha = fill.alpha * t;
+				}
 				start.strokeAlpha = (1-t);
 				end.strokeAlpha = t;
+				
 			}
 			
 			// center border graphic?
+		}
+		
+		public override function set selected(value:Boolean):void {
+			super.selected = value;
+			
+			if(selected) _textFormat.color = 0x000000;
+			else _textFormat.color = 0xffffff;
+			_textField.setTextFormat(_textFormat);
 		}
 		
 		public function get fill():SolidFill {

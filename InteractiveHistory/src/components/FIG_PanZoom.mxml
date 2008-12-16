@@ -185,7 +185,7 @@
 			<mx:Button 
 				toolTip="Zoom In"
 				click="{imageViewer.zoom('in');}"
-				 label="+" useHandCursor="true" buttonMode="true" fontSize="20" fontFamily="Tahoma" width="40" height="30"/>
+				 label="+" useHandCursor="true" buttonMode="true" fontSize="20" fontFamily="Tahoma" width="40" height="30" />
 
 			<mx:Button 
 				toolTip="Zoom Out"

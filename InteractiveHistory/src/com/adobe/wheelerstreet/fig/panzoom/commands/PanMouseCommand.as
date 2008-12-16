@@ -151,7 +151,7 @@ package com.adobe.wheelerstreet.fig.panzoom.commands
 					
 					//
 					// objects	
-					trace("isThrow:"+_mouseTracker.isThrow());
+					//trace("isThrow:"+_mouseTracker.isThrow());
 
  					if(_reciever.containsRect(ImageViewer(_client).viewRect))
 					{
