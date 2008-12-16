@@ -28,7 +28,7 @@
 			}**/
 			
 			public function updateLegend(source:String):void {
-				trace("Updating legend");
+				trace("Updating legend with " + source);
 				switch (source) {
 					case 'rain':
 						if (rainfallOverlayCheckbox.selected)
@@ -42,13 +42,13 @@
 						if (temperatureOverlayCheckbox.selected)
 							overlayLegend.source = "/images/TemperatureLegend.gif";
 						break;
-					case 'elevation':
+				/*	case 'elevation':
 						if (elevationOverlayCheckbox.selected)
 							overlayLegend.source = "/images/ElevationLegend.gif";
-						break;
+						break;*/
 					default: break;
 				}
-				if (!rainfallOverlayCheckbox.selected && !climateOverlayCheckbox.selected && !temperatureOverlayCheckbox.selected && !elevationOverlayCheckbox.selected)
+				if (!rainfallOverlayCheckbox.selected && !climateOverlayCheckbox.selected && !temperatureOverlayCheckbox.selected/* && !elevationOverlayCheckbox.selected*/)
 					overlayLegend.alpha = 0;
 				else
 					overlayLegend.alpha = 1;
