@@ -248,7 +248,7 @@ package com.adobe.washuhci.interactivehist
 //			_cities[2] = carthage;
 
 			
-			var macedonia:Border = new Border("MACEDON");
+			var macedonia:Border = new Border("Macedon");
 			macedonia.location = new Point(230,41);
 			macedonia.timeStart = -1020;
 			macedonia.timeEnd = 400;
