@@ -9,6 +9,7 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 	import com.adobe.wheelerstreet.fig.panzoom.interfaces.ICommandMode;
 	import com.adobe.wheelerstreet.fig.panzoom.utils.ContentRectangle;
 	
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
@@ -199,7 +200,7 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 					/**
 					 * REMOVED --- WE DON'T WANT PANNING ON MOUSE CLICK
 					 * 
-					 * 
+					 *
 					//
 					// commands / actions
 					var __dist:Number = Point.distance(_mouseDownPosition, new Point(e.localX, e.localY));
@@ -212,14 +213,16 @@ package com.adobe.wheelerstreet.fig.panzoom.modes
 						var localizedPoint:Point = new Point(e.localX,e.localY);
 						if(e.target != _client) {
 							var child:DisplayObject = e.target as DisplayObject;
-							localizedPoint = _client.globalToLocal(child.localToGlobal(localizedPoint));	
+							localizedPoint = _client.globalToLocal(child.localToGlobal(localizedPoint));
+							
+							_panToPointCommand.fromPoint = localizedPoint;
+							_panToPointCommand.toPoint = new Point(_client.width/2 , _client.height/2);
+							_panToPointCommand.execute();	
 						}
 						
-						_panToPointCommand.fromPoint = localizedPoint;
-						_panToPointCommand.toPoint = new Point(_client.width/2 , _client.height/2);
-						_panToPointCommand.execute();
+						// _panToPointCommand stuff used to be here.
 					}
-					 * **/
+					// * **/
 					break;
 
 				// 4.				

@@ -1,1 +1,1 @@
-﻿package com.adobe.washuhci.interactivehist.timeline {		import flash.text.TextField;		public class GenericMarker extends TimelineMarker {			public function GenericMarker() {			super();						// format text field here		}		}	}
+﻿package com.adobe.washuhci.interactivehist.timeline {		import flash.text.TextField;	import flash.text.TextFormat;		public class GenericMarker extends TimelineMarker {			public function GenericMarker() {			super();						// format text field here		}		}	}

@@ -3,6 +3,7 @@ package com.adobe.washuhci.interactivehist
 	import com.adobe.washuhci.interactivehist.display.*;
 	import com.adobe.wheelerstreet.fig.panzoom.ImageViewer;
 	import com.degrafa.geometry.Path;
+	import com.degrafa.paint.SolidFill;
 	import com.degrafa.paint.SolidStroke;
 	
 	import flash.display.Bitmap;
@@ -30,12 +31,13 @@ package com.adobe.washuhci.interactivehist
 		public var timeMax:Number = 400;
 		
 		private var _cities:Array;
+		private var _cityLayer:Sprite;
 		private var _borders:Array;
+		private var _borderLayer:Sprite;
 		
 		[Bindable]
 		public var time:Number = timeMin;
-		[Bindable]
-		public var timeResolution:Number = 20.0;
+		private var _timeResolution:Number = 20.0;
 		[Bindable]
 		public var selected:MapItem = null;
 
@@ -107,7 +109,11 @@ package com.adobe.washuhci.interactivehist
 			super();
 			
 			_cities = new Array();
+			_cityLayer = new Sprite();
+			this.addChild(_cityLayer);
 			_borders = new Array();
+			_borderLayer = new Sprite();
+			this.addChild(_borderLayer);
 			
 			injectCityData();
 			
@@ -128,7 +134,7 @@ package com.adobe.washuhci.interactivehist
 			_rainfallSprite = new Sprite();
 			_climateSprite = new Sprite();
 			var bitmapLoader:Loader = new Loader();
-			trace("temperature loading...");
+			trace("InteractiveMap:  loading overlays...");
 			bitmapLoader.load(TEMPERATURE_URL);
 			bitmapLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleBitmapLoad);
 			function handleBitmapLoad(e:Event):void {
@@ -137,21 +143,18 @@ package com.adobe.washuhci.interactivehist
 				switch(loadedURL) {
 					case TEMPERATURE_URL.url:
 						_temperature = Bitmap(bitmapLoader.content);
-						trace("climate loading...");
 						bitmapLoader.load(CLIMATE_URL); break;
 					case CLIMATE_URL.url:
 						_climate = Bitmap(bitmapLoader.content);
-						trace("rainfall loading...");
 						bitmapLoader.load(RAINFALL_URL); break;	
 					case RAINFALL_URL.url:
 						_rainfall = Bitmap(bitmapLoader.content); 
-						trace("elevation loading...");
 						bitmapLoader.load(ELEVATION_URL); break;
 					case ELEVATION_URL.url:
-						_elevation = Bitmap(bitmapLoader.content); break;
+						_elevation = Bitmap(bitmapLoader.content); 
+						trace("InteractiveMap:  overlays loaded."); break;
 					default: break;
 				}
-				trace("load complete!");
 			}
 			
 			addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
@@ -268,8 +271,12 @@ package com.adobe.washuhci.interactivehist
 			var stroke:SolidStroke = new SolidStroke();
 			stroke.color = 0xffffff;
 			stroke.alpha = 0.5;
-			stroke.weight = 3;
+			stroke.weight = 1;
+			var fill:SolidFill = new SolidFill();
+			fill.color = 0xffffff;
+			fill.alpha = 0.0;
 			macedonia.stroke = stroke;
+			macedonia.fill = fill;
 			_borders[0] = macedonia;
 		}
 		
@@ -279,22 +286,32 @@ package com.adobe.washuhci.interactivehist
 			city.timeStart = start;
 			city.timeEnd = end;
 			city.zoomLevelView = zoomLevelView;
-//			trace(city.label + " zoom: " + city.zoomLevelView + ", arg: " + zoomLevelView);
 			_cities[_cities.length] = city;
 		}
 		
 		private function selectItem(me:MouseEvent):void {
+			if(selected != null) selected.selected = false;
+			
 			if(me.target is City) {
 				var selectedCity:City = me.target as City;
 				selected = selectedCity;
+				selected.selected = true;
 			}
 			else if(me.target is Border) {
 				var selectedBorder:Border = me.target as Border;
 				selected = selectedBorder;
+				selected.selected = true;
 			}
 			
-			// quick fix, should handle this in the other mouse handler
-			//me.stopImmediatePropagation();
+			invalidateDisplayList();
+		}
+		
+		[Bindable]
+		public function get timeResolution():Number {
+			return _timeResolution;
+		}
+		public function set timeResolution(zLevel:Number):void {
+			_timeResolution = Math.round(36/(Math.pow(zLevel+1,2)));
 		}
 		
 		[Bindable]
@@ -343,11 +360,11 @@ package com.adobe.washuhci.interactivehist
 			var city:City;
 			if(doShow) {
 				for each(city in _cities) {
-					this.addChild(city);
+					_cityLayer.addChild(city);
 				}
 			} else {
 				for each(city in _cities) {
-					if(this.contains(city)) this.removeChild(city);
+					if(_cityLayer.contains(city)) _cityLayer.removeChild(city);
 				}
 			}
 			invalidateDisplayList();
@@ -378,16 +395,16 @@ package com.adobe.washuhci.interactivehist
 		public function set showBorderPolitical(doShow:Boolean):void {
 			_showBorderPolitical = doShow;
 			
-//			var border:Border;
-//			if(doShow) {
-//				for each(border in _borders) {
-//					this.addChild(border);
-//				}
-//			} else {
-//				for each(border in _borders) {
-//					if(this.contains(border)) this.removeChild(border);
-//				}
-//			}
+			var border:Border;
+			if(doShow) {
+				for each(border in _borders) {
+					_borderLayer.addChild(border);
+				}
+			} else {
+				for each(border in _borders) {
+					if(_borderLayer.contains(border))_borderLayer.removeChild(border);
+				}
+			}
 			invalidateDisplayList();
 		}
 		
@@ -419,13 +436,19 @@ package com.adobe.washuhci.interactivehist
 					viewLoc = contentCoordstoViewCoords(geoCoordsToPixels(city.location));
 					city.x = viewLoc.x;
 					city.y = viewLoc.y;
+					city.sizeTo(getZoom());
+					
 //					trace(city.label + " zoom: " + city.zoomLevelView + ", map zoom level: " + getZoom());
-					if((city.x+city.width) < 0 || city.x >= viewRect.width || (city.y+city.height) < 0 || city.y >= viewRect.height || city.timeStart-timeResolution > time || city.timeEnd+timeResolution < time || city.zoomLevelView/5.5 > getZoom()) {
-						if(this.contains(city))
-							this.removeChild(city);
+					if((city.x+city.width) < 0 || city.x >= viewRect.width || 
+						(city.y+city.height) < 0 || city.y >= viewRect.height || 
+						city.timeStart-timeResolution > time || city.timeEnd+timeResolution < time || 
+						city.zoomLevelView/5.5 > getZoom()) {
+							
+						if(_cityLayer.contains(city))
+							_cityLayer.removeChild(city);
 					}
-					else if(!this.contains(city))
-						this.addChild(city);
+					else if(!_cityLayer.contains(city))
+						_cityLayer.addChild(city);
 				}
 			}
 			
@@ -441,8 +464,8 @@ package com.adobe.washuhci.interactivehist
 					border.scale = _contentRectangle.zoom*2.0;
 					
 					if((border.x+border.width) < 0 || border.x >= viewRect.width || (border.y+border.height) < 0 || border.y >= viewRect.height) {
-						if(this.contains(border)) this.removeChild(border);
-					} else if(!this.contains(border)) this.addChild(border);
+						if(_borderLayer.contains(border)) _borderLayer.removeChild(border);
+					} else if(!_borderLayer.contains(border)) _borderLayer.addChild(border);
 				}
 			}
 			
@@ -467,10 +490,11 @@ package com.adobe.washuhci.interactivehist
 										 );	 
 				
 				_elevationSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
-				_elevationSprite.alpha = 0.5;
+				_elevationSprite.alpha = 0.7;
 				
 				if(!this.contains(_elevationSprite)) {
 					this.addChild(_elevationSprite);
+					this.swapChildren(_elevationSprite, _cityLayer); // keep cities on top
 				}
 			} else {
 				if(this.contains(_elevationSprite)) {
@@ -498,10 +522,11 @@ package com.adobe.washuhci.interactivehist
 										 );	 
 				
 				_temperatureSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
-				_temperatureSprite.alpha = 0.5;
+				_temperatureSprite.alpha = 0.7;
 				
 				if(!this.contains(_temperatureSprite)) {
 					this.addChild(_temperatureSprite);
+					this.swapChildren(_temperatureSprite, _cityLayer); // keep cities on top
 				}
 			} else {
 				if(this.contains(_temperatureSprite)) {
@@ -529,10 +554,11 @@ package com.adobe.washuhci.interactivehist
 										 );	 
 				
 				_climateSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
-				_climateSprite.alpha = 0.5;
+				_climateSprite.alpha = 0.7;
 				
 				if(!this.contains(_climateSprite)) {
 					this.addChild(_climateSprite);
+					this.swapChildren(_climateSprite, _cityLayer);
 				}
 			} else {
 				if(this.contains(_climateSprite)) {
@@ -560,10 +586,11 @@ package com.adobe.washuhci.interactivehist
 										 );	 
 				
 				_rainfallSprite.graphics.drawRect(0,0,unscaledWidth, unscaledHeight);
-				_rainfallSprite.alpha = 0.5;
+				_rainfallSprite.alpha = 0.7;
 				
 				if(!this.contains(_rainfallSprite)) {
 					this.addChild(_rainfallSprite);
+					this.swapChildren(_rainfallSprite, _cityLayer);
 				}
 			} else {
 				if(this.contains(_rainfallSprite)) {
