@@ -34,10 +34,10 @@
 						if (rainfallOverlayCheckbox.selected)
 							overlayLegend.source = "/images/RainfallLegend.gif";
 						break;
-					case 'climate':
+				/*	case 'climate':
 						if (climateOverlayCheckbox.selected)
 							overlayLegend.source = "/images/ClimateLegend.gif";
-						break;
+						break;*/
 					case 'temp':
 						if (temperatureOverlayCheckbox.selected)
 							overlayLegend.source = "/images/TemperatureLegend.gif";
@@ -48,7 +48,7 @@
 						break;*/
 					default: break;
 				}
-				if (!rainfallOverlayCheckbox.selected && !climateOverlayCheckbox.selected && !temperatureOverlayCheckbox.selected/* && !elevationOverlayCheckbox.selected*/)
+				if (!rainfallOverlayCheckbox.selected && /*!climateOverlayCheckbox.selected &&*/ !temperatureOverlayCheckbox.selected/* && !elevationOverlayCheckbox.selected*/)
 					overlayLegend.alpha = 0;
 				else
 					overlayLegend.alpha = 1;
